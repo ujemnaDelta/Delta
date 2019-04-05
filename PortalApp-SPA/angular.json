@@ -23,9 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "./login.component.css"
-
+              "src/styles.css"
             ],
             "scripts": []
           },
