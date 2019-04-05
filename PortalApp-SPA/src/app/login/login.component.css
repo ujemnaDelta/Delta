@@ -10,13 +10,30 @@ body, html {
   background-size: cover;
   opacity: 0.9;
 }
+.example-card {
+  width: 400px;
+  height: 400px;
 
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+
+}
+.main-div{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.example-header-image {
+  background-size: cover;
+}
 .imageBackground {
   background-image:url(images/bgClouds-min.jpg);
-  position: absolute;
   background-position: center 0px;
   background-repeat: no-repeat;
   height: 100%;
   width: 100%;
-  opacity:0.85;
+  opacity:0.9;
 }
