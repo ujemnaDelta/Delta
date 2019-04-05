@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
 
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
@@ -17,6 +18,7 @@ import { LoginComponent } from './login/login.component';
    ],
    imports: [
       BrowserModule,
+      CommonModule,
       MatToolbarModule,
       MatButtonModule,
       MatCardModule,
