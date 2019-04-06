@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PortalApp.API.Data;
+using PortalApp.API.DataTransferObjects;
 using PortalApp.API.Models;
 
 namespace PortalApp.API.Controllers
@@ -18,35 +21,22 @@ namespace PortalApp.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string userName, string userPassword){
+        public async Task<IActionResult> Register(UserForRegisterDTO userForRegister){
             
-            userName = userName.ToLower();
+            userForRegister.UserName = userForRegister.UserName.ToLower();
 
-            if(await repositoryGlobalField.IfUserExists(userName)){
+            if(await repositoryGlobalField.IfUserExists(userForRegister.UserName)){
                 return BadRequest("UserName already exists");
             }
 
-            UserModel newUser = new UserModel{UserName = userName};
+            UserModel newUser = new UserModel{UserName = userForRegister.UserName};
 
-            UserModel createdUser = await repositoryGlobalField.RegisterUser(newUser, userPassword);
+            UserModel createdUser = await repositoryGlobalField.RegisterUser(newUser, userForRegister.UserPassword);
 
-            return null;
+            //return CreatedAtRoute();
+            
+            return StatusCode(201);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 }
