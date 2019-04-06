@@ -1,29 +1,38 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
 <div class="section">
   <div class="imageBackground">
       <div class="main-div">
     <mat-card class="example-card" >
       <mat-card-header>
-        <div mat-card-avatar class="example-header-image"></div>
-        <mat-card-title>Login</mat-card-title>
+        <mat-card-title>System ocen</mat-card-title>
 
       </mat-card-header>
 
 
       <mat-card-content>
           <div class="form-container">
-              <mat-form-field>
-                <input matInput placeholder="Enter your name">
-              </mat-form-field>
+              <mat-form-field appearance="outline">
+                  <mat-label>Username</mat-label>
+                  <input matInput placeholder="Enter your login">
+                  <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
 
-              <mat-form-field>
-                <textarea matInput placeholder="Enter your password"></textarea>
-              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                  <mat-label>Password</mat-label>
+                  <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'">
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
 
             </div>
       </mat-card-content>
 
-      <mat-card-actions>
-     <button mat-raised-button color="primary">Login</button>
+      <mat-card-actions class="login-button">
+        <button class="btn-login" mat-raised-button color="warn">Log in</button>
       </mat-card-actions>
     </mat-card>
 </div>
