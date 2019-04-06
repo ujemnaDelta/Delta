@@ -11,11 +11,15 @@ import {
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
    declarations: [
       AppComponent,
-      LoginComponent
+      LoginComponent,
+      UserComponent
    ],
    imports: [
       BrowserModule,
@@ -29,7 +33,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       MatTableModule,
       MatMenuModule,
       MatIconModule,
-      MatProgressSpinnerModule
+      MatProgressSpinnerModule,
+      HttpClientModule,
+      FormsModule
    ],
    providers: [],
    bootstrap: [

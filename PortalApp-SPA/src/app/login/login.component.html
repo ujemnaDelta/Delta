@@ -5,6 +5,7 @@
   <div class="imageBackground">
       <div class="main-div">
     <mat-card class="example-card" >
+      <form #loginForm="ngForm" (ngSubmit) = "login()">
       <mat-card-header>
         <mat-card-title>System ocen</mat-card-title>
 
@@ -12,29 +13,35 @@
 
 
       <mat-card-content>
-          <div class="form-container">
+
+          <div class="form-container"  >
               <mat-form-field appearance="outline">
                   <mat-label>Username</mat-label>
-                  <input matInput placeholder="Enter your login">
+                  <input matInput placeholder="Enter your login" name="username"
+                  required [(ngModel)]="model.username">
                   <mat-icon matSuffix>person</mat-icon>
                 </mat-form-field>
 
 
               <mat-form-field appearance="outline">
                   <mat-label>Password</mat-label>
-                  <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'">
+                  <input matInput placeholder="Enter your password" name="password"
+                   [type]="hide ? 'password' : 'text'" required [(ngModel)]="model.password">
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                   <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </button>
                 </mat-form-field>
 
-            </div>
+              </div>
       </mat-card-content>
 
-      <mat-card-actions class="login-button">
-        <button class="btn-login" mat-raised-button color="warn">Log in</button>
+      <mat-card-actions class="login-button" >
+        <button [disabled]="!loginForm.valid" type="submit" color="warn" class="btn-login" mat-raised-button >Log in</button>
       </mat-card-actions>
+
+    </form>
     </mat-card>
+
 </div>
   </div>
 
