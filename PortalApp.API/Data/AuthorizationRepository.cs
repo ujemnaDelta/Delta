@@ -14,9 +14,12 @@ namespace PortalApp.API.Data
         }
 
         //Automatycznie wygenerowane 
-        public Task<bool> IfUserExists(string userName)
+        public async Task<bool> IfUserExists(string userName)
         {
-            throw new System.NotImplementedException();
+            if(await contextGlobalField.Users.AnyAsync(x=> x.UserName == userName)){
+                return true;
+            }
+            return false;
         }
 
         public async Task<UserModel> LoginUser(string userName, string userPassword)
@@ -30,6 +33,8 @@ namespace PortalApp.API.Data
             if(!CheckPassword(userPassword, user.UserPasswordHash, user.UserPasswordSalt)){
                 return null;
             }
+
+            return user;
         }
 
         private bool CheckPassword(string userPassword, byte[] userPasswordHash, byte[] userPasswordSalt)
