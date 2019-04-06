@@ -69,8 +69,8 @@ namespace PortalApp.API.Data
         private void CreatePassword(string userPassword, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hashMsg = new System.Security.Cryptography.HMACSHA512()){
-                passwordHash=hashMsg.Key;
-                passwordSalt=hashMsg.ComputeHash(System.Text.Encoding.UTF8.GetBytes(userPassword));
+                passwordSalt=hashMsg.Key;
+                passwordHash=hashMsg.ComputeHash(System.Text.Encoding.UTF8.GetBytes(userPassword));
             }
         }
     }

@@ -31,6 +31,13 @@ namespace PortalApp.API.Controllers
             return Ok(values);
         }
 
+        //DO USUNIĘCIA POTEM
+        [HttpGet("users")]
+        public async Task<IActionResult> GetUsersAsync()
+        {
+            List<Models.UserModel> users = await contextGlobalField.Users.ToListAsync();
+            return Ok(users);
+        }
         // GET api/values/5
         [HttpGet("{id}")]
         public  async Task<IActionResult> GetValue(int id)
