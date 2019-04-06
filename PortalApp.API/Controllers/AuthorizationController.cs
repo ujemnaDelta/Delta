@@ -51,7 +51,7 @@ namespace PortalApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDTO userForLogin)
         {
-            var userFromRepository = await repositoryGlobalField.LoginUser(userForLogin.UserName, userForLogin.UserPassword);
+            var userFromRepository = await repositoryGlobalField.LoginUser(userForLogin.UserName.ToLower(), userForLogin.UserPassword);
 
             if (userFromRepository == null)
             {
@@ -64,7 +64,7 @@ namespace PortalApp.API.Controllers
             };
 
             //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationGlobalField.GetSection("AppSetting:Token").Value));
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey"));
+             var key = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(configurationGlobalField.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor{
