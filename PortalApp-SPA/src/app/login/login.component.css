@@ -10,15 +10,37 @@ body, html {
   background-size: cover;
   opacity: 0.9;
 }
-.example-card {
-  width: 400px;
-  height: 400px;
 
+.login-button {
+  justify-content: flex-end;
+  display: flex;
+}
+.btn-login {
+  width:100px;
+}
+
+.example-card {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  justify-content: space-between;
+  flex-direction: column;
+  display: flex;
+  position: absolute;
+background-color: rgba(255, 253, 253, 0.5);
+}
+.mat-card-header{
+  justify-content: center;
+  flex:2em;
+
+}
+.mat-icon {
+   transform: scale(1.5);
 }
 .form-container {
   display: flex;
   flex-direction: column;
-
+  bottom: 0;
 }
 .main-div{
   height: 100vh;
@@ -26,14 +48,24 @@ body, html {
   justify-content: center;
   align-items: center;
 }
-.example-header-image {
-  background-size: cover;
-}
+
+
+
 .imageBackground {
-  background-image:url(images/bgClouds-min.jpg);
-  background-position: center 0px;
-  background-repeat: no-repeat;
-  height: 100%;
   width: 100%;
-  opacity:0.9;
+  height: 100%;
+  display: block;
+  position: relative;
+}
+
+.imageBackground::after {
+  content: "";
+  background-image:url(images/bgClouds-min.jpg);
+  opacity: 0.8;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
 }

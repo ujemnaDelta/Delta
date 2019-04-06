@@ -10,6 +10,7 @@ import {
 } from '@angular/material';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
    declarations: [
@@ -24,6 +25,7 @@ import { LoginComponent } from './login/login.component';
       MatCardModule,
       MatInputModule,
       MatDialogModule,
+      BrowserAnimationsModule,
       MatTableModule,
       MatMenuModule,
       MatIconModule,
