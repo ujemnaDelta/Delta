@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PortalApp.API.Models;
 
 namespace PortalApp.API.Data
@@ -13,14 +14,35 @@ namespace PortalApp.API.Data
         }
 
         //Automatycznie wygenerowane 
-        public Task<bool> IfUserExists(string UserName)
+        public Task<bool> IfUserExists(string userName)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<UserModel> LoginUser(string UserName, string UserPassword)
+        public async Task<UserModel> LoginUser(string userName, string userPassword)
         {
-            throw new System.NotImplementedException();
+            var user = await contextGlobalField.Users.FirstOrDefaultAsync(x => x.UserName == userName); 
+
+            if(user == null){
+                return null;
+            }
+
+            if(!CheckPassword(userPassword, user.UserPasswordHash, user.UserPasswordSalt)){
+                return null;
+            }
+        }
+
+        private bool CheckPassword(string userPassword, byte[] userPasswordHash, byte[] userPasswordSalt)
+        {
+            using (var hashMsg = new System.Security.Cryptography.HMACSHA512(userPasswordSalt)){
+                
+                var calculatedHash = hashMsg.ComputeHash(System.Text.Encoding.UTF8.GetBytes(userPassword));
+
+                for(int i = 0; i < calculatedHash.Length; i++){
+                    if(calculatedHash[i] != userPasswordHash[i]) 
+                        return false;
+                }
+            }return true;
         }
 
         public async Task<UserModel> RegisterUser(UserModel user, string userPassword)
