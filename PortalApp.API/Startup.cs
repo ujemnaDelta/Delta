@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -60,6 +61,7 @@ namespace PortalApp.API
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc();
+            //Debug.Log(Configuration.GetSection("AppSettings:Token").Value);
         }
     }
 }
