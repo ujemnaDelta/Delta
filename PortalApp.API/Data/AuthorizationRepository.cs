@@ -39,6 +39,7 @@ namespace PortalApp.API.Data
 
         private bool CheckPassword(string userPassword, byte[] userPasswordHash, byte[] userPasswordSalt)
         {
+            //do skasowania potem moi drodzy bo jak będzie nullem to wywali aplikację :*
             if(userPassword == null){
                 throw new System.ArgumentException("PASSWORD JEST NULLEM", "Tymon");
             }
