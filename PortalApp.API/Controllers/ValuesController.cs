@@ -15,7 +15,6 @@ namespace PortalApp.API.Controllers
     public class ValuesController : ControllerBase
     {
 
-
         private readonly DataContext contextGlobalField;
 
         

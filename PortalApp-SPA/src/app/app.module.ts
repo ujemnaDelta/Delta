@@ -14,7 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { UserComponent } from './user/user.component';
-import { AuthService } from './_service/auth.service';
+import {AuthService} from 'src/app/services/auth.service';
 
 @NgModule({
    declarations: [

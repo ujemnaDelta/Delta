@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,6 @@ namespace PortalApp.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
             services.AddCors();
-
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer( options => {
                 options.TokenValidationParameters =new TokenValidationParameters{
                     ValidateIssuerSigningKey = true,
@@ -63,6 +63,7 @@ namespace PortalApp.API
             app.UseCors( x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyHeader());
             app.UseAuthentication();
             app.UseMvc();
+            //Debug.Log(Configuration.GetSection("AppSettings:Token").Value);
         }
     }
 }

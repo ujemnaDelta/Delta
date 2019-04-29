@@ -17,16 +17,16 @@
           <div class="form-container"  >
               <mat-form-field appearance="outline">
                   <mat-label>Username</mat-label>
-                  <input matInput placeholder="Enter your login" name="username"
-                  required [(ngModel)]="model.username">
+                  <input matInput placeholder="Enter your login" name="UserName"
+                  required [(ngModel)]="model.userName">
                   <mat-icon matSuffix>person</mat-icon>
                 </mat-form-field>
 
 
               <mat-form-field appearance="outline">
                   <mat-label>Password</mat-label>
-                  <input matInput placeholder="Enter your password" name="password"
-                   [type]="hide ? 'password' : 'text'" required [(ngModel)]="model.password">
+                  <input matInput placeholder="Enter your password" name="UserPassword"
+                   [type]="hide ? 'password' : 'text'" required [(ngModel)]="model.userPassword">
                   <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                   <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                   </button>
