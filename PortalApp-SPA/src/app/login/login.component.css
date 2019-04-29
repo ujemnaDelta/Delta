@@ -21,14 +21,9 @@ body, html {
 }
 
 .example-card {
-  position: relative;
   width: 300px;
   height: 300px;
-  justify-content: space-between;
-  flex-direction: column;
-  display: flex;
-  position: absolute;
-background-color: rgba(255, 253, 253, 0.5);
+  background-color: rgba(255, 253, 253, 0.5);
 }
 .mat-card-header{
   justify-content: center;
@@ -39,9 +34,11 @@ background-color: rgba(255, 253, 253, 0.5);
    transform: scale(1.5);
 }
 .form-container {
-  display: flex;
+  justify-content: space-between;
   flex-direction: column;
-  bottom: 0;
+  padding-top: 55px;
+  display: flex;
+  align-items: stretch;
 }
 .main-div{
   height: 100vh;
