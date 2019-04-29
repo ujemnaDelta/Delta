@@ -1,7 +1,10 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+<div *ngIf="mainMode && loggedIn()">
+    <app-main></app-main>
+</div>
+<div *ngIf="!mainMode || !loggedIn()" class="section">
 
-<div class="section">
   <div class="imageBackground">
       <div class="main-div">
     <mat-card class="example-card" >

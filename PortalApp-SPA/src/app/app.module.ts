@@ -15,12 +15,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import {AuthService} from 'src/app/services/auth.service';
+import { MainComponent } from './main/main.component';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 @NgModule({
    declarations: [
       AppComponent,
       LoginComponent,
-      UserComponent
+      UserComponent,
+      MainComponent,
+
    ],
    imports: [
       BrowserModule,
@@ -36,10 +40,11 @@ import {AuthService} from 'src/app/services/auth.service';
       MatIconModule,
       MatProgressSpinnerModule,
       HttpClientModule,
-      FormsModule
+      FormsModule,
+      MDBBootstrapModule.forRoot()
    ],
    providers: [
-     AuthService
+      AuthService
    ],
    bootstrap: [
       AppComponent

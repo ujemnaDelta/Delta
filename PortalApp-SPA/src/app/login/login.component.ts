@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 
 @Component({
   selector: 'app-login',
@@ -8,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class LoginComponent implements OnInit {
   hide = true;
+  mainMode = false;
   model: any = {};
   constructor(private authService: AuthService) { }
 
@@ -16,10 +18,14 @@ export class LoginComponent implements OnInit {
   login() {
     console.log(this.model);
     this.authService.login(this.model).subscribe(next => {
-      console.log("Logged in.");
+      this.mainMode = true;
     }, error => {
-      console.log("Error");
+      console.log('Error');
     });
+  }
+  loggedIn() {
+    const token = localStorage.getItem('token');
+    return !!token;
   }
 
 }
