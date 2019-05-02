@@ -17,6 +17,7 @@ import { UserComponent } from './user/user.component';
 import {AuthService} from 'src/app/services/auth.service';
 import { MainComponent } from './main/main.component';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
+import { ErrorInterceptorProvider } from './services/error.interceptor';
 
 @NgModule({
    declarations: [
@@ -44,7 +45,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
       MDBBootstrapModule.forRoot()
    ],
    providers: [
-      AuthService
+      AuthService,
+      ErrorInterceptorProvider
    ],
    bootstrap: [
       AppComponent

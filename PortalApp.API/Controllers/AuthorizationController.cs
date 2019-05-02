@@ -52,6 +52,7 @@ namespace PortalApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDTO userForLogin)
         {
+           
             var userFromRepository = await repositoryGlobalField.LoginUser(userForLogin.UserName, userForLogin.UserPassword);
 
             if (userFromRepository == null)
