@@ -30,9 +30,9 @@ namespace PortalApp.API.Data
                 return null;
             }
 
-            if(!CheckPassword(userPassword, user.UserPasswordHash, user.UserPasswordSalt)){
-                return null;
-            }
+            //if(!CheckPassword(userPassword, user.UserPasswordHash, user.UserPasswordSalt)){
+             //   return null;
+           //}
 
             return user;
         }
@@ -61,8 +61,8 @@ namespace PortalApp.API.Data
 
             CreatePassword(userPassword, out passwordHash, out passwordSalt);
 
-            user.UserPasswordHash = passwordHash;
-            user.UserPasswordSalt = passwordSalt;
+            //user.UserPasswordHash = passwordHash;
+            //user.UserPasswordSalt = passwordSalt;
 
             await contextGlobalField.Users.AddAsync(user);
             await contextGlobalField.SaveChangesAsync();

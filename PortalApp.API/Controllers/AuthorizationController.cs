@@ -6,7 +6,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PortalApp.API.Data;
@@ -15,6 +17,7 @@ using PortalApp.API.Models;
 
 namespace PortalApp.API.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthorizationController : ControllerBase
@@ -22,11 +25,14 @@ namespace PortalApp.API.Controllers
         private readonly IAuthorizationRepository repositoryGlobalField;
 
         private readonly IConfiguration configurationGlobalField;
+        private readonly UserManager<UserModel> _userManager;
+        private readonly SignInManager<UserModel> _signInManager;
 
-        public AuthorizationController(IAuthorizationRepository repository, IConfiguration configuration)
+        public AuthorizationController(IConfiguration configuration, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
         {
             configurationGlobalField = configuration;
-            repositoryGlobalField = repository;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         [HttpPost("register")]
@@ -52,24 +58,36 @@ namespace PortalApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDTO userForLogin)
         {
-           
-            var userFromRepository = await repositoryGlobalField.LoginUser(userForLogin.UserName, userForLogin.UserPassword);
 
-            if (userFromRepository == null)
+            var user = await _userManager.FindByNameAsync(userForLogin.UserName);
+            var result = await _signInManager.CheckPasswordSignInAsync(user, userForLogin.UserPassword, false);
+
+            if (result.Succeeded)
             {
-                return Unauthorized();
+                var appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == userForLogin.UserName.ToUpper());
+                return Ok(new
+                {
+                    token = GenerateJwtToken(appUser)
+                });
             }
+            return Unauthorized();
 
+
+
+        }
+        private string GenerateJwtToken(UserModel user)
+        {
             var claims = new[]{
-                new Claim(ClaimTypes.NameIdentifier, userFromRepository.Id.ToString()),
-                new Claim(ClaimTypes.Name, userFromRepository.UserName)
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
             };
 
             //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationGlobalField.GetSection("AppSetting:Token").Value));
-             var key = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(configurationGlobalField.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(configurationGlobalField.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor{
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = creds
@@ -77,10 +95,7 @@ namespace PortalApp.API.Controllers
 
             var tokenhandler = new JwtSecurityTokenHandler();
             var token = tokenhandler.CreateToken(tokenDescriptor);
-            return Ok(new {
-                token = tokenhandler.WriteToken(token)
-            });
-
+            return tokenhandler.WriteToken(token);
         }
     }
 }
