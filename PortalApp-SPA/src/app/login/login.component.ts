@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group';
 import { AlertifyService } from '../services/alertify.service';
 import { Router } from '@angular/router';
+import { AuthGuard } from '../guards/auth.guard';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   hide = true;
   model: any = {};
-  constructor(private router: Router, public authService: AuthService, private alertify: AlertifyService) { }
+  constructor(private router: Router, public authService: AuthService, private alertify: AlertifyService, public guard: AuthGuard) { }
 
   ngOnInit() {
   }

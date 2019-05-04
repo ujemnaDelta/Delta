@@ -70,7 +70,7 @@ namespace PortalApp.API.Controllers
                 var appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == userForLogin.UserName.ToUpper());
                 return Ok(new
                 {
-                    token = GenerateJwtToken(appUser)
+                    token = GenerateJwtToken(appUser).Result
                 });
             }
             return Unauthorized();
@@ -78,13 +78,19 @@ namespace PortalApp.API.Controllers
 
 
         }
-        private string GenerateJwtToken(UserModel user)
+        private async Task<string> GenerateJwtToken(UserModel user)
         {
-            var claims = new[]{
+            var claims = new List<Claim>{
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName)
             };
 
+            var roles = await _userManager.GetRolesAsync(user);
+
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
             //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationGlobalField.GetSection("AppSetting:Token").Value));
             var key = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(configurationGlobalField.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

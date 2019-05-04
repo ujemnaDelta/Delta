@@ -24,6 +24,7 @@ import { HomeComponent } from './home/home.component';
 import { MainComponent } from './main/main.component';
 import { TeamComponent } from './team/team.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 
 
 
@@ -34,7 +35,8 @@ import { AuthGuard } from './guards/auth.guard';
       UserComponent,
       HomeComponent,
       MainComponent,
-      TeamComponent
+      TeamComponent,
+      AdminPanelComponent,
    ],
    imports: [
       BrowserModule,

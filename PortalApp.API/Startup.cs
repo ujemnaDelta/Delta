@@ -60,7 +60,11 @@ namespace PortalApp.API
                     ValidateAudience = false
                 };
             });
-
+            services.AddAuthorization(options =>{
+                options.AddPolicy("AdminRole", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("HRRole", policy => policy.RequireRole("HR","Admin"));
+                options.AddPolicy("LeaderRole", policy => policy.RequireRole("Leader", "Admin"));
+            });
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc(options =>{
                 var policy = new AuthorizationPolicyBuilder()

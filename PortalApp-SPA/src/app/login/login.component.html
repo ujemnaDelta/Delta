@@ -12,13 +12,16 @@
         </mdb-navbar-brand>
         <ul class="navbar-nav mr-auto">
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
-              <a class="nav-link waves-light" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
+              <a class="nav-link waves-light text-primary" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
-              <a class="nav-link waves-light" style="color:black" mdbWavesEffect [routerLink]="['/team']" ><mdb-icon fas icon="users"></mdb-icon>Team</a>
+              <a class="nav-link waves-light text-primary" style="color:black" mdbWavesEffect [routerLink]="['/team']" ><mdb-icon fas icon="users"></mdb-icon>Team</a>
             </li>
+            <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
+                <a class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/admin']" ><mdb-icon fas icon="toolbox"></mdb-icon>Admin Panel</a>
+              </li>
             </ul>
     <!-- Collapsible content -->
     <links>
@@ -26,17 +29,17 @@
       <!-- Links -->
       <ul class="navbar-nav ml-auto">
         <li *ngIf="loggedIn()" class="nav-item active">
-          <a class="nav-link waves-light" mdbWavesEffect><mdb-icon fas icon="envelope"></mdb-icon> Contact<span class="sr-only">(current)</span></a>
+          <a class="nav-link waves-light text-primary" mdbWavesEffect><mdb-icon fas icon="envelope"></mdb-icon> Contact<span class="sr-only">(current)</span></a>
         </li>
 
 
         <!-- Dropdown -->
         <li *ngIf="loggedIn()" class="nav-item dropdown" dropdown>
-          <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+          <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light text-primary" mdbWavesEffect>
             <mdb-icon fas icon="user"></mdb-icon>Welcome {{authService.decodedToken?.unique_name | titlecase}}<span class="caret"></span></a>
           <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary mt-3" role="menu">
-            <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a>
-            <a class="dropdown-item waves-light" mdbWavesEffect href="#" (click)="logout()">Log out</a>
+            <a class="dropdown-item waves-light text-warning" mdbWavesEffect href="#">My account</a>
+            <a class="dropdown-item waves-light text-danger" mdbWavesEffect href="#" (click)="logout()">Log out</a>
           </div>
         </li>
 

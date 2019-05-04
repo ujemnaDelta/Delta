@@ -4,6 +4,7 @@ import { MainComponent } from './main/main.component';
 import { TeamComponent } from './team/team.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 
 
 export const appRoutes: Routes = [
@@ -15,6 +16,7 @@ export const appRoutes: Routes = [
     children: [
       {path: 'main', component: MainComponent},
       {path: 'team', component: TeamComponent},
+      {path: 'admin', component: AdminPanelComponent, data: {roles: ['Admin']}},
     ]
   },
   {path: '**', redirectTo: '', pathMatch: 'full'},
