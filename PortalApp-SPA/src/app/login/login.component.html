@@ -1,55 +1,82 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar blue-grey lighten-4 z-depth-1 sticky-top" [containerInside]="false">
 
-<div *ngIf="mainMode && loggedIn()">
-    <app-main></app-main>
+    <!-- Navbar brand -->
+        <mdb-navbar-brand>
+            <a class="navbar-brand" >
+                <img src="http://it.krd.pl/Images/logokrd" height="30" alt="mdb logo">
+
+              </a>
+
+
+        </mdb-navbar-brand>
+        <ul class="navbar-nav mr-auto">
+            <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
+              <a class="nav-link waves-light" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
+              <a class="nav-link waves-light" style="color:black" mdbWavesEffect [routerLink]="['/team']" ><mdb-icon fas icon="users"></mdb-icon>Team</a>
+            </li>
+            </ul>
+    <!-- Collapsible content -->
+    <links>
+
+      <!-- Links -->
+      <ul class="navbar-nav ml-auto">
+        <li *ngIf="loggedIn()" class="nav-item active">
+          <a class="nav-link waves-light" mdbWavesEffect><mdb-icon fas icon="envelope"></mdb-icon> Contact<span class="sr-only">(current)</span></a>
+        </li>
+
+
+        <!-- Dropdown -->
+        <li *ngIf="loggedIn()" class="nav-item dropdown" dropdown>
+          <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+            <mdb-icon fas icon="user"></mdb-icon>Welcome {{authService.decodedToken?.unique_name | titlecase}}<span class="caret"></span></a>
+          <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary mt-3" role="menu">
+            <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a>
+            <a class="dropdown-item waves-light" mdbWavesEffect href="#" (click)="logout()">Log out</a>
+          </div>
+        </li>
+
+      </ul>
+      <!-- Links -->
+    </links>
+    <!-- Collapsible content -->
+
+  </mdb-navbar>
+<!--Navbar-->
+<div class = "justify-content-center d-flex my-4" *ngIf="!loggedIn()" >
+<form  #loginForm="ngForm"  class="text-center border border-light p-5 w-25" (ngSubmit)="login()">
+
+    <p class="h4 mb-4">Sign in</p>
+
+    <div class="form-container"  >
+        <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Enter your login" name="UserName"
+            required [(ngModel)]="model.userName">
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+
+
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Enter your password" name="UserPassword"
+             type="password" required [(ngModel)]="model.userPassword">
+             <mat-icon matSuffix>lock</mat-icon>
+          </mat-form-field>
+
 </div>
-<div *ngIf="!mainMode || !loggedIn()" class="section">
-
-  <div class="imageBackground">
-      <div class="main-div">
-    <mat-card class="example-card" >
-      <form #loginForm="ngForm" (ngSubmit) = "login()">
-      <mat-card-header>
-        <mat-card-title style="font-size: 20px;">System ocen</mat-card-title>
-
-      </mat-card-header>
-
-
-      <mat-card-content>
-
-          <div class="form-container"  >
-              <mat-form-field appearance="outline">
-                  <mat-label>Username</mat-label>
-                  <input matInput placeholder="Enter your login" name="UserName"
-                  required [(ngModel)]="model.userName">
-                  <mat-icon matSuffix>person</mat-icon>
-                </mat-form-field>
-
-
-              <mat-form-field appearance="outline">
-                  <mat-label>Password</mat-label>
-                  <input matInput placeholder="Enter your password" name="UserPassword"
-                   [type]="hide ? 'password' : 'text'" required [(ngModel)]="model.userPassword">
-                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                  </button>
-                </mat-form-field>
-
-              </div>
-      </mat-card-content>
-
-      <mat-card-actions class="login-button" >
-        <button [disabled]="!loginForm.valid" type="submit" color="warn" class="btn-login" mat-raised-button >Log in</button>
-      </mat-card-actions>
-
-    </form>
-    </mat-card>
-
-</div>
+    <button [disabled]="!loginForm.valid" class="btn btn-success my-2 my-sm-0 h2" type="submit">Login</button>
+    <!-- Register -->
+    <div class = "my-4">
+    <p>Not a member?
+        <a href="">Register</a>
+    </p>
   </div>
-
-
-
+</form>
 </div>
 
 

@@ -60,6 +60,9 @@ namespace PortalApp.API.Controllers
         {
 
             var user = await _userManager.FindByNameAsync(userForLogin.UserName);
+            if(user == null) {
+                return Unauthorized();
+            }
             var result = await _signInManager.CheckPasswordSignInAsync(user, userForLogin.UserPassword, false);
 
             if (result.Succeeded)

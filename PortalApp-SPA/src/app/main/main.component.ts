@@ -11,8 +11,5 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
   }
-  logout() {
-    localStorage.removeItem('token');
-    console.log('logged out');
-  }
+
 }
