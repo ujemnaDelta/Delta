@@ -92,11 +92,16 @@ namespace PortalApp.API.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
             //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationGlobalField.GetSection("AppSetting:Token").Value));
-            var key = new SymmetricSecurityKey(Encoding.Unicode.GetBytes(configurationGlobalField.GetSection("AppSettings:Token").Value));
+            var keyByteArray = Encoding.ASCII.GetBytes("6d655cff-4640-42a2-acdc-cc9a6a22dd85");
+            var key = new SymmetricSecurityKey(keyByteArray);
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
+                Issuer = "Muminek",
+                Audience = "Audience",
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = creds

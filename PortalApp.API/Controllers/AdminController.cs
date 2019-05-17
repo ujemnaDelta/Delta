@@ -22,17 +22,24 @@ namespace PortalApp.API.Controllers
             _context = context;
             _userManager = userManager;
         }
+
         [Authorize(Policy = "AdminRole")]
-        [HttpGet("userswithroles")]
-        public async Task<IActionResult> GetUserWithRoles()
+        [HttpGet("usersWithRoles")]
+        public async Task<IActionResult> GetUsersWithRoles()
         {
-            var userList = await (from user in _context.Users orderby user.UserName
-                                    select new {
-                                        Id = user.Id,
-                                        UserName = user.UserName,
-                                        Roles = (from userRole in user.UserRoles join role in _context.Roles on userRole.RoleId equals role.Id select role.Name).ToList()
-                                    } ).ToListAsync();
-            return Ok("Only admins can see it");
+            var userList = await (from user in _context.Users
+                                  orderby user.UserName
+                                  select new
+                                  {
+                                      Id = user.Id,
+                                      UserName = user.UserName,
+                                      Roles = (from userRole in user.UserRoles
+                                               join role in _context.Roles
+                                               on userRole.RoleId
+                                               equals role.Id
+                                               select role.Name).ToList()
+                                  }).ToListAsync();
+            return Ok(userList);
         }
         [Authorize(Policy = "AdminRole")]
         [HttpPost("editRoles/{UserName}")]

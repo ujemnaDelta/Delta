@@ -20,7 +20,9 @@
               <a class="nav-link waves-light text-primary" style="color:black" mdbWavesEffect [routerLink]="['/team']" ><mdb-icon fas icon="users"></mdb-icon>Team</a>
             </li>
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
-                <a class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/admin']" ><mdb-icon fas icon="toolbox"></mdb-icon>Admin Panel</a>
+                <a *ngIf="authService.roleMatch(['Admin'])" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/admin']" ><mdb-icon fas icon="toolbox"></mdb-icon>Admin Panel</a>
+                <a *ngIf="authService.roleMatch(['HR'])" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/hr']" ><mdb-icon fas icon="toolbox"></mdb-icon>HR Panel</a>
+                <a *ngIf="authService.roleMatch(['Leader'])" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/leader']" ><mdb-icon fas icon="toolbox"></mdb-icon>Leader Panel</a>
               </li>
             </ul>
     <!-- Collapsible content -->
