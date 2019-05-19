@@ -10,7 +10,7 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
   styleUrls: ['./user-managment.component.css']
 })
 export class UserManagmentComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'userName', 'roles'];
+  displayedColumns: string[] = ['id', 'userName', 'roles', 'Action'];
   users: MatTableDataSource<User>;
   constructor(private adminService: AdminService) {
   }
