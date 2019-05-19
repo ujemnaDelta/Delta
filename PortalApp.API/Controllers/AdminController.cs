@@ -23,7 +23,7 @@ namespace PortalApp.API.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Policy = "AdminRole")]
+        [Authorize(Policy = "RequireAdmin")]
         [HttpGet("usersWithRoles")]
         public async Task<IActionResult> GetUsersWithRoles()
         {
@@ -41,7 +41,7 @@ namespace PortalApp.API.Controllers
                                   }).ToListAsync();
             return Ok(userList);
         }
-        [Authorize(Policy = "AdminRole")]
+        [Authorize(Policy = "RequireAdmin")]
         [HttpPost("editRoles/{UserName}")]
         public async Task<IActionResult> EditRoles(string UserName, RoleEditDto roleEditDto) 
         {
@@ -66,15 +66,15 @@ namespace PortalApp.API.Controllers
         }
 
 
-        [Authorize(Policy = "HRRole")]
+        [Authorize(Policy = "RequireHR")]
         [HttpGet("allUser")]
         public IActionResult GetAllUser()
         {
             return Ok("Only HR and Admin can see it");
         }
 
-        [Authorize(Policy = "LeaderRole")]
-        [HttpGet("teamUsers")]
+        [Authorize(Policy = "RequireLeader")]
+        [HttpGet("teamusers")]
         public IActionResult GetTeamUsers()
         {
             return Ok("Only Leader and Admin can see it");

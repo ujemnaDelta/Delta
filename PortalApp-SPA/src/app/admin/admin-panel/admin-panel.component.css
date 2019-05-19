@@ -1,0 +1,20 @@
+body, html {
+  height: 100%;
+}
+
+.example-large-box {
+  display:flex;
+  width:1000px;
+  margin: 20px;
+  padding: 30px;
+  border-radius: 8px;
+}
+.mat-tab-group  {
+  align-items:center;
+  height: 100%;
+  width: 100%;
+}
+
+.main {
+  height: 92.1vh;
+}

@@ -1,0 +1,20 @@
+.example-container {
+  height: 420px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+th.mat-sort-header-sorted {
+  color: black;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100vh;
+}
+
+td, th {
+  width: 35%;
+
+}

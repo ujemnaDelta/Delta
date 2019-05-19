@@ -2,12 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
+import { JwtModule } from '@auth0/angular-jwt';
 import { CommonModule } from '@angular/common';
 import {
 
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
 
-  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule
+  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatPaginatorModule, MatSortModule
 
 } from '@angular/material';
 import { AppComponent } from './app.component';
@@ -27,8 +28,16 @@ import { AuthGuard } from './guards/auth.guard';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { HrPanelComponent } from './hr/hr-panel/hr-panel.component';
 import { LeaderPanelComponent } from './leader/leader-panel/leader-panel.component';
+import { HasRoleDirective } from './_directives/hasRole.directive';
+import { UserManagmentComponent } from './admin/user-managment/user-managment.component';
+import { TeamManagmentComponent } from './admin/team-managment/team-managment.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { AdminService } from './services/admin.service';
 
 
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
    declarations: [
@@ -40,12 +49,16 @@ import { LeaderPanelComponent } from './leader/leader-panel/leader-panel.compone
       TeamComponent,
       AdminPanelComponent,
       HrPanelComponent,
-      LeaderPanelComponent
+      LeaderPanelComponent,
+      HasRoleDirective,
+      UserManagmentComponent,
+      TeamManagmentComponent
    ],
    imports: [
       BrowserModule,
       CommonModule,
       MatToolbarModule,
+      MatTabsModule,
       MatButtonModule,
       MatCardModule,
       MatInputModule,
@@ -57,14 +70,24 @@ import { LeaderPanelComponent } from './leader/leader-panel/leader-panel.compone
       MatProgressSpinnerModule,
       HttpClientModule,
       FormsModule,
+      MatPaginatorModule,
+      MatSortModule,
       MDBBootstrapModule.forRoot(),
-      RouterModule.forRoot(appRoutes)
+      RouterModule.forRoot(appRoutes),
+      JwtModule.forRoot({
+        config: {
+          tokenGetter: tokenGetter,
+          whitelistedDomains: ['localhost:5000'],
+          blacklistedRoutes: ['localhost:5000/api/authorization']
+        }
+      })
    ],
    providers: [
       AuthService,
       ErrorInterceptorProvider,
       AlertifyService,
-      AuthGuard
+      AuthGuard,
+      AdminService
    ],
    bootstrap: [
       AppComponent

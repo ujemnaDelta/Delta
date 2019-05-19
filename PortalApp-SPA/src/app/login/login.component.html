@@ -1,5 +1,5 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar blue-grey lighten-4 z-depth-1 sticky-top" [containerInside]="false">
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar cloudy-knoxville-gradient lighten-4 z-depth-1-half sticky-top" [containerInside]="false">
 
     <!-- Navbar brand -->
         <mdb-navbar-brand>
@@ -20,9 +20,9 @@
               <a class="nav-link waves-light text-primary" style="color:black" mdbWavesEffect [routerLink]="['/team']" ><mdb-icon fas icon="users"></mdb-icon>Team</a>
             </li>
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
-                <a *ngIf="authService.roleMatch(['Admin'])" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/admin']" ><mdb-icon fas icon="toolbox"></mdb-icon>Admin Panel</a>
-                <a *ngIf="authService.roleMatch(['HR'])" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/hr']" ><mdb-icon fas icon="toolbox"></mdb-icon>HR Panel</a>
-                <a *ngIf="authService.roleMatch(['Leader'])" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/leader']" ><mdb-icon fas icon="toolbox"></mdb-icon>Leader Panel</a>
+                <a *appHasRole="['Admin']" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/adminPanel']" ><mdb-icon fas icon="toolbox"></mdb-icon>Admin Panel</a>
+                <a *appHasRole="['HR']"class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/hrPanel']" ><mdb-icon fas icon="toolbox"></mdb-icon>HR Panel</a>
+                <a *appHasRole="['Leader']" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/leaderPanel']" ><mdb-icon fas icon="toolbox"></mdb-icon>Leader Panel</a>
               </li>
             </ul>
     <!-- Collapsible content -->
@@ -52,8 +52,8 @@
 
   </mdb-navbar>
 <!--Navbar-->
-<div class = "justify-content-center d-flex my-4" *ngIf="!loggedIn()" >
-<form  #loginForm="ngForm"  class="text-center border border-light p-5 w-25" (ngSubmit)="login()">
+<div class = "justify-content-center d-flex my-4 " *ngIf="!loggedIn()" >
+<form  #loginForm="ngForm"  class="text-center border border-light p-5 w-25 cloudy-knoxville-gradient z-depth-3 mt-5" (ngSubmit)="login()">
 
     <p class="h4 mb-4">Sign in</p>
 
