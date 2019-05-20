@@ -15,6 +15,23 @@ namespace PortalApp.API.Data
                
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
+
+            builder.Entity<UserTeam>()
+            .HasKey(k => new {k.TeamId, k.UserId});
+
+            builder.Entity<UserTeam>()
+            .HasOne(u => u.User)
+            .WithMany(u=> u.UserTeams)
+            .HasForeignKey(u => u.UserId)
+            .IsRequired();
+
+            
+            builder.Entity<UserTeam>()
+            .HasOne(u => u.Team)
+            .WithMany(u=> u.Teams)
+            .HasForeignKey(u => u.TeamId)
+            .IsRequired();
+            
             builder.Entity<UserRole>(userRole =>{
                 userRole.HasKey(ur => new {ur.UserId, ur.RoleId});
                 userRole.HasOne( ur => ur.Role)
@@ -30,5 +47,8 @@ namespace PortalApp.API.Data
             });
         }
         public DbSet<ValueModel> Values { get; set; }
+
+        public DbSet<Team> Team {get; set;}
+        public DbSet<UserTeam> UserTeam {get;set;}
     }
 }

@@ -18,6 +18,9 @@ namespace PortalApp.API.Data
             _roleManager = roleManager;
 
         }
+        public void SeedTeam() {
+
+        }
         public void SeedUsers()
         {
             if(!_userManager.Users.Any())
@@ -39,6 +42,7 @@ namespace PortalApp.API.Data
                 {
                     _userManager.CreateAsync(user, "password").Wait();
                     _userManager.AddToRoleAsync(user,"Member").Wait();
+                    
                 }
                 var adminUser = new UserModel
                 {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PortalApp.API.Migrations
 {
-    public partial class IdentityInitial : Migration
+    public partial class UpdateUTeam : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,11 +41,25 @@ namespace PortalApp.API.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    FullUserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Team",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NameOfTeam = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Team", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -167,6 +181,30 @@ namespace PortalApp.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserTeam",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false),
+                    TeamId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTeam", x => new { x.TeamId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_UserTeam_Team_TeamId",
+                        column: x => x.TeamId,
+                        principalTable: "Team",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserTeam_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -203,6 +241,11 @@ namespace PortalApp.API.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserTeam_UserId",
+                table: "UserTeam",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -223,10 +266,16 @@ namespace PortalApp.API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "UserTeam");
+
+            migrationBuilder.DropTable(
                 name: "Values");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Team");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -11,7 +11,7 @@ import { AddPersonDialogComponent } from '../admin-panel/addPerson-dialog/addPer
   styleUrls: ['./user-managment.component.css']
 })
 export class UserManagmentComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'userName', 'roles', 'Action'];
+  displayedColumns: string[] = ['id', 'userName', 'roles', 'team', 'Action'];
   users: MatTableDataSource<User>;
   searchKey: string;
   constructor(private adminService: AdminService, private dialog: MatDialog) {

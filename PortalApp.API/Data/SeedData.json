@@ -1,26 +1,59 @@
 [
     {
         "Username": "Lola",
-        "Password": "password"
+        "Password": "password",
+        "FullUserName" : "Lola Tracz"
     },
     {
         "Username": "Gracek",
-        "Password": "password"
+        "Password": "password",
+        "FullUserName" : "Gracek Nowak"
     },
     {
         "Username": "Placek",
-        "Password": "password"
+        "Password": "password",
+        "FullUserName" : "Placek Kowalski"
+      
     },
     {
         "Username": "Tymon",
-        "Password": "password"
+        "Password": "password",
+        "FullUserName" : "Tymon Taki"
+       
     },
     {
         "Username": "Bolek",
-        "Password": "password"
+        "Password": "password",
+        "FullUserName" : "Bolek Kwas"
     },
     {
         "Username": "Lolek",
-        "Password": "password"
+        "Password": "password",
+        "FullUserName" : "Lolek Racki"
+    },
+    {
+        "Username": "ppecetowiec",
+        "Password": "password",
+        "FullUserName" : "Piotr Pecetowiec"
+    },
+    {
+        "Username": "pkaczor",
+        "Password": "password",
+        "FullUserName" : "Paweł Kaczor"
+    },
+    {
+        "Username": "mracki",
+        "Password": "password",
+        "FullUserName" : "Michał Racki"
+    },
+    {
+        "Username": "wnowak",
+        "Password": "password",
+        "FullUserName" : "Witold Nowak"
+    },
+    {
+        "Username": "kkacprowski",
+        "Password": "password",
+        "FullUserName" : "Kacper Kacprowski"
     }
 ]

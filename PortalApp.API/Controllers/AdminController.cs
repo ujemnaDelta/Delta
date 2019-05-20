@@ -33,6 +33,13 @@ namespace PortalApp.API.Controllers
                                   {
                                       Id = user.Id,
                                       UserName = user.UserName,
+                                      FullUserName = user.FullUserName,
+                                      Team = (from team in _context.Team
+                                        join UserTeam in _context.UserTeam
+                                        on team.Id equals UserTeam.TeamId
+                                        join users in _context.Users
+                                        on UserTeam.UserId equals user.Id
+                                        select team.NameOfTeam).Distinct(),
                                       Roles = (from userRole in user.UserRoles
                                                join role in _context.Roles
                                                on userRole.RoleId
@@ -73,11 +80,14 @@ namespace PortalApp.API.Controllers
             return Ok("Only HR and Admin can see it");
         }
 
-        [Authorize(Policy = "RequireLeader")]
-        [HttpGet("teamusers")]
-        public IActionResult GetTeamUsers()
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpGet("teams")]
+        public async Task<IActionResult> Teams()
         {
-            return Ok("Only Leader and Admin can see it");
+           
+            return Ok();
         }
+
+
     }
 }

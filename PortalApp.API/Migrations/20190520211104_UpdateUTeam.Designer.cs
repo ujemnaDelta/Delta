@@ -9,8 +9,8 @@ using PortalApp.API.Data;
 namespace PortalApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190503191619_IdentityInitial")]
-    partial class IdentityInitial
+    [Migration("20190520211104_UpdateUTeam")]
+    partial class UpdateUTeam
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -109,6 +109,18 @@ namespace PortalApp.API.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
+            modelBuilder.Entity("PortalApp.API.Models.Team", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("NameOfTeam");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Team");
+                });
+
             modelBuilder.Entity("PortalApp.API.Models.UserModel", b =>
                 {
                     b.Property<int>("Id")
@@ -123,6 +135,8 @@ namespace PortalApp.API.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
+
+                    b.Property<string>("FullUserName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -170,6 +184,19 @@ namespace PortalApp.API.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("PortalApp.API.Models.UserTeam", b =>
+                {
+                    b.Property<int>("TeamId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("TeamId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTeam");
                 });
 
             modelBuilder.Entity("PortalApp.API.Models.ValueModel", b =>
@@ -225,6 +252,19 @@ namespace PortalApp.API.Migrations
 
                     b.HasOne("PortalApp.API.Models.UserModel", "User")
                         .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PortalApp.API.Models.UserTeam", b =>
+                {
+                    b.HasOne("PortalApp.API.Models.Team", "Team")
+                        .WithMany("Teams")
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PortalApp.API.Models.UserModel", "User")
+                        .WithMany("UserTeams")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
