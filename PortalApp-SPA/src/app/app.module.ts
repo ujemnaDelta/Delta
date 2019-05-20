@@ -8,7 +8,9 @@ import {
 
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
 
-  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatPaginatorModule, MatSortModule
+  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatPaginatorModule,
+  MatSortModule, MatCheckboxModule, MatDatepickerModule, MatGridListModule, MatRadioModule,
+   MatNativeDateModule, MatOptionModule, MatSelectModule
 
 } from '@angular/material';
 import { AppComponent } from './app.component';
@@ -33,6 +35,7 @@ import { UserManagmentComponent } from './admin/user-managment/user-managment.co
 import { TeamManagmentComponent } from './admin/team-managment/team-managment.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import { AdminService } from './services/admin.service';
+import { AddPersonDialogComponent } from './admin/admin-panel/addPerson-dialog/addPerson-dialog.component';
 
 
 export function tokenGetter() {
@@ -52,23 +55,32 @@ export function tokenGetter() {
       LeaderPanelComponent,
       HasRoleDirective,
       UserManagmentComponent,
-      TeamManagmentComponent
+      TeamManagmentComponent,
+      AddPersonDialogComponent
    ],
    imports: [
       BrowserModule,
       CommonModule,
       MatToolbarModule,
       MatTabsModule,
+      MatRadioModule,
       MatButtonModule,
+      MatOptionModule,
+      MatSelectModule,
       MatCardModule,
+      MatNativeDateModule,
       MatInputModule,
       MatDialogModule,
       BrowserAnimationsModule,
       MatTableModule,
       MatMenuModule,
       MatIconModule,
+      MatDialogModule,
       MatProgressSpinnerModule,
       HttpClientModule,
+      MatDatepickerModule,
+      MatCheckboxModule,
+      MatGridListModule,
       FormsModule,
       MatPaginatorModule,
       MatSortModule,
@@ -91,6 +103,7 @@ export function tokenGetter() {
    ],
    bootstrap: [
       AppComponent
-   ]
+   ],
+   entryComponents: [AddPersonDialogComponent]
 })
 export class AppModule { }

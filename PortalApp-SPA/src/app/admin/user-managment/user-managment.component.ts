@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from 'src/app/models/User';
 import { AdminService } from 'src/app/services/admin.service';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig} from '@angular/material';
+import { AddPersonDialogComponent } from '../admin-panel/addPerson-dialog/addPerson-dialog.component';
 
 
 @Component({
@@ -12,7 +13,8 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 export class UserManagmentComponent implements OnInit {
   displayedColumns: string[] = ['id', 'userName', 'roles', 'Action'];
   users: MatTableDataSource<User>;
-  constructor(private adminService: AdminService) {
+  searchKey: string;
+  constructor(private adminService: AdminService, private dialog: MatDialog) {
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -23,7 +25,6 @@ export class UserManagmentComponent implements OnInit {
       this.users = new MatTableDataSource(user);
       this.users.paginator = this.paginator;
     this.users.sort = this.sort;
-
     }, error => {
       console.log(error);
     });
@@ -35,7 +36,18 @@ export class UserManagmentComponent implements OnInit {
       this.users.paginator.firstPage();
     }
   }
+  onSearchClear() {
+    this.searchKey = '';
+    this.applyFilter(this.searchKey);
+}
 
+onCreateDialog() {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = true;
+  dialogConfig.width = '50%';
+  this.dialog.open(AddPersonDialogComponent, dialogConfig);
+}
 }
 
 

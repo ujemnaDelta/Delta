@@ -3,7 +3,14 @@
   width: 940px;
   overflow: auto;
 }
+button:focus {
+  outline: 0 !important;
+}
+.iconsButton:focus {
 
+  border: 0 !important;
+  box-shadow: none !important;
+}
 table {
   width: 100%;
 }
