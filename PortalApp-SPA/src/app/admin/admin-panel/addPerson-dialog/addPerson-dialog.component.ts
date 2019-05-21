@@ -9,13 +9,19 @@ import { User } from 'src/app/models/User';
   styleUrls: ['./addPerson-dialog.component.css']
 })
 export class AddPersonDialogComponent implements OnInit {
-
+  model: any = {};
   constructor( public dialogRef: MatDialogRef<User>) { }
 
   ngOnInit() {
   }
 
+  register() {
+    console.log(this.model);
+  }
+
+
   onClose() {
     this.dialogRef.close();
-}
+    console.log('Canceled');
+  }
 }

@@ -186,13 +186,13 @@ namespace PortalApp.API.Migrations
 
             modelBuilder.Entity("PortalApp.API.Models.UserTeam", b =>
                 {
-                    b.Property<int>("TeamId");
-
                     b.Property<int>("UserId");
 
-                    b.HasKey("TeamId", "UserId");
+                    b.Property<int>("TeamId");
 
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId", "TeamId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("UserTeam");
                 });
@@ -257,7 +257,7 @@ namespace PortalApp.API.Migrations
             modelBuilder.Entity("PortalApp.API.Models.UserTeam", b =>
                 {
                     b.HasOne("PortalApp.API.Models.Team", "Team")
-                        .WithMany("Teams")
+                        .WithMany("UsersTeam")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade);
 

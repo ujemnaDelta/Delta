@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PortalApp.API.Migrations
 {
-    public partial class UpdateUTeam : Migration
+    public partial class UpdateModelsPart2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -190,7 +190,7 @@ namespace PortalApp.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTeam", x => new { x.TeamId, x.UserId });
+                    table.PrimaryKey("PK_UserTeam", x => new { x.UserId, x.TeamId });
                     table.ForeignKey(
                         name: "FK_UserTeam_Team_TeamId",
                         column: x => x.TeamId,
@@ -243,9 +243,9 @@ namespace PortalApp.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserTeam_UserId",
+                name: "IX_UserTeam_TeamId",
                 table: "UserTeam",
-                column: "UserId");
+                column: "TeamId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

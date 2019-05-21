@@ -27,6 +27,8 @@ namespace PortalApp.API.Controllers
         [HttpGet("usersWithRoles")]
         public async Task<IActionResult> GetUsersWithRoles()
         {
+          var asd = _context.Users.FirstOrDefaultAsync();
+          
             var userList = await (from user in _context.Users
                                   orderby user.UserName
                                   select new
@@ -34,12 +36,8 @@ namespace PortalApp.API.Controllers
                                       Id = user.Id,
                                       UserName = user.UserName,
                                       FullUserName = user.FullUserName,
-                                      Team = (from team in _context.Team
-                                        join UserTeam in _context.UserTeam
-                                        on team.Id equals UserTeam.TeamId
-                                        join users in _context.Users
-                                        on UserTeam.UserId equals user.Id
-                                        select team.NameOfTeam).Distinct(),
+                                      Team = _context.UserTeam.Include(p => p.Team)
+                                        .Where(p => p.UserId == user.Id).Select(p => p.Team.NameOfTeam),
                                       Roles = (from userRole in user.UserRoles
                                                join role in _context.Roles
                                                on userRole.RoleId
@@ -50,7 +48,7 @@ namespace PortalApp.API.Controllers
         }
         [Authorize(Policy = "RequireAdmin")]
         [HttpPost("editRoles/{UserName}")]
-        public async Task<IActionResult> EditRoles(string UserName, RoleEditDto roleEditDto) 
+        public async Task<IActionResult> EditRoles(string UserName, RoleEditDto roleEditDto)
         {
             var user = await _userManager.FindByNameAsync(UserName);
 
@@ -61,11 +59,11 @@ namespace PortalApp.API.Controllers
             var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
 
             if(!result.Succeeded){
-                return BadRequest("Failed to add to roles");  
+                return BadRequest("Failed to add to roles");
             }
             result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
              if(!result.Succeeded){
-                return BadRequest("Failed to remove role");  
+                return BadRequest("Failed to remove role");
             }
 
             return Ok(await _userManager.GetRolesAsync(user));
@@ -84,7 +82,7 @@ namespace PortalApp.API.Controllers
         [HttpGet("teams")]
         public async Task<IActionResult> Teams()
         {
-           
+
             return Ok();
         }
 

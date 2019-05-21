@@ -9,8 +9,8 @@ using PortalApp.API.Data;
 namespace PortalApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190520211104_UpdateUTeam")]
-    partial class UpdateUTeam
+    [Migration("20190521144230_UpdateModelsPart2")]
+    partial class UpdateModelsPart2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -188,13 +188,13 @@ namespace PortalApp.API.Migrations
 
             modelBuilder.Entity("PortalApp.API.Models.UserTeam", b =>
                 {
-                    b.Property<int>("TeamId");
-
                     b.Property<int>("UserId");
 
-                    b.HasKey("TeamId", "UserId");
+                    b.Property<int>("TeamId");
 
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId", "TeamId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("UserTeam");
                 });
@@ -259,7 +259,7 @@ namespace PortalApp.API.Migrations
             modelBuilder.Entity("PortalApp.API.Models.UserTeam", b =>
                 {
                     b.HasOne("PortalApp.API.Models.Team", "Team")
-                        .WithMany("Teams")
+                        .WithMany("UsersTeam")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade);
 
