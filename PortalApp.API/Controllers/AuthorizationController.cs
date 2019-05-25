@@ -23,16 +23,18 @@ namespace PortalApp.API.Controllers
     public class AuthorizationController : ControllerBase
     {
         private readonly IAuthorizationRepository repositoryGlobalField;
-
+        private readonly DataContext _context;
         private readonly IConfiguration configurationGlobalField;
         private readonly UserManager<UserModel> _userManager;
         private readonly SignInManager<UserModel> _signInManager;
 
-        public AuthorizationController(IConfiguration configuration, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
+        public AuthorizationController(DataContext context,IConfiguration configuration, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IAuthorizationRepository repo)
         {
             configurationGlobalField = configuration;
+            repositoryGlobalField = repo;
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         [HttpPost("register")]
@@ -46,13 +48,14 @@ namespace PortalApp.API.Controllers
                 return BadRequest("UserName already exists");
             }
 
-            UserModel newUser = new UserModel { UserName = userForRegister.UserName };
+            var result = await repositoryGlobalField.RegisterUser(userForRegister);
 
-            UserModel createdUser = await repositoryGlobalField.RegisterUser(newUser, userForRegister.UserPassword);
-
-            //return CreatedAtRoute();
-
-            return StatusCode(201);
+            if(result.Succeeded) {
+                return StatusCode(201);
+            }
+            else {
+                return BadRequest("Something error with registry");
+            }
         }
 
         [HttpPost("login")]
@@ -74,8 +77,6 @@ namespace PortalApp.API.Controllers
                 });
             }
             return Unauthorized();
-
-
 
         }
         private async Task<string> GenerateJwtToken(UserModel user)

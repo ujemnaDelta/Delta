@@ -36,6 +36,7 @@ import { TeamManagmentComponent } from './admin/team-managment/team-managment.co
 import {MatTabsModule} from '@angular/material/tabs';
 import { AdminService } from './services/admin.service';
 import { AddPersonDialogComponent } from './admin/admin-panel/addPerson-dialog/addPerson-dialog.component';
+import { DeleteDialogComponent } from './admin/admin-panel/delete-dialog/delete-dialog.component';
 
 
 export function tokenGetter() {
@@ -56,7 +57,8 @@ export function tokenGetter() {
       HasRoleDirective,
       UserManagmentComponent,
       TeamManagmentComponent,
-      AddPersonDialogComponent
+      AddPersonDialogComponent,
+      DeleteDialogComponent
    ],
    imports: [
       BrowserModule,
@@ -104,6 +106,6 @@ export function tokenGetter() {
    bootstrap: [
       AppComponent
    ],
-   entryComponents: [AddPersonDialogComponent]
+   entryComponents: [AddPersonDialogComponent, DeleteDialogComponent]
 })
 export class AppModule { }

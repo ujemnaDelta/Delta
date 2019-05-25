@@ -1,8 +1,8 @@
 export interface User {
   id: number;
-  UserName: string;
-  FullName: string;
-  Password: string;
+  userName: string;
+  fullUserName: string;
+  UserPassword: string;
   team?: string[];
   roles?: string[];
 }

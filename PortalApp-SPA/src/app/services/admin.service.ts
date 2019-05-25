@@ -14,4 +14,16 @@ constructor(private http: HttpClient) { }
 
     return this.http.get(this.baseUrl + 'admin/usersWithRoles');
   }
+
+  getRoles() {
+    return this.http.get(this.baseUrl + 'admin/roles');
+  }
+
+  deleteUser(id: string) {
+    return this.http.get(this.baseUrl + 'admin/user/' + id);
+  }
+
+  getTeam() {
+    return this.http.get(this.baseUrl + 'admin/teams');
+  }
 }

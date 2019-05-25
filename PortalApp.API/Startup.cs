@@ -84,6 +84,7 @@ namespace PortalApp.API
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
+            services.AddScoped<IAdminPanelRepository, AdminRepository>();
             services.AddTransient<Seed>();
         }
 

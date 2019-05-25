@@ -19,17 +19,14 @@
             <mat-error>Invalid email address.</mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="Password" name="Password" type="password" [(ngModel)]="model.Password">
+            <input matInput placeholder="Password" name="Password" type="password" [(ngModel)]="model.UserPassword">
             <mat-icon matSuffix class="mat-primary">lock</mat-icon>
           </mat-form-field>
 
 <mat-form-field color="text-primary">
   <mat-label>Choose team</mat-label>
   <mat-select name="team" [(ngModel)]="model.team">
-    <mat-option value = "Alfa">Alfa</mat-option>
-    <mat-option value = "Beta">Beta</mat-option>
-    <mat-option value = "Gamma">Gamma</mat-option>
-    <mat-option value = "Delta">Delta</mat-option>
+    <mat-option *ngFor="let team of teams" [value] ="team">{{team}}</mat-option>
   </mat-select>
   <mat-icon matSuffix class="mat-primary">group</mat-icon>
 </mat-form-field>
@@ -37,10 +34,7 @@
 <mat-form-field color="text-primary">
     <mat-label>Choose role in system</mat-label>
     <mat-select name="roles" [(ngModel)]="model.roles">
-      <mat-option value = "Member">Member</mat-option>
-      <mat-option value = "Leader">Leader</mat-option>
-      <mat-option value = "HR">HR</mat-option>
-      <mat-option value = "Admin">Admin</mat-option>
+      <mat-option *ngFor="let role of roles" [value] ="role">{{role}}</mat-option>
     </mat-select>
     <mat-icon matSuffix class="mat-primary">whatshot</mat-icon>
   </mat-form-field>

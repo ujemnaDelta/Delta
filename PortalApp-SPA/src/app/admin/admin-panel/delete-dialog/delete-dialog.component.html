@@ -1,0 +1,22 @@
+<mat-toolbar color="primary" >
+
+      <span class="title-center">Delete person</span>
+
+  </mat-toolbar>
+<div mat-dialog-content>
+<p>{{user.id}}</p>
+
+<p>{{user.team}}</p>
+<p>{{user.roles}}</p>
+</div>
+
+
+<div class="main-buttons">
+  <button mat-raised-button color="warn" >
+    <mat-icon class="mr-1">clear_all</mat-icon>Cancel
+  </button>
+  <button mat-raised-button class="bg-success text-white w-25" id="submitButton" type="submit">
+    <mat-icon class="mr-1">person_add</mat-icon>Delete user
+  </button>
+</div>
+

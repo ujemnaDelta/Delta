@@ -14,21 +14,23 @@ namespace PortalApp.API.Controllers
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
     {
+        private readonly IAdminPanelRepository _adminRepo;
         private readonly DataContext _context;
         private readonly UserManager<UserModel> _userManager;
 
-        public AdminController(DataContext context, UserManager<UserModel> userManager)
+        public AdminController(DataContext context, UserManager<UserModel> userManager, IAdminPanelRepository adminRepo)
         {
             _context = context;
             _userManager = userManager;
+            _adminRepo = adminRepo;
         }
 
         [Authorize(Policy = "RequireAdmin")]
-        [HttpGet("usersWithRoles")]
+        [HttpGet("userswithroles")]
         public async Task<IActionResult> GetUsersWithRoles()
         {
-          var asd = _context.Users.FirstOrDefaultAsync();
-          
+            var asd = await _context.Users.FirstOrDefaultAsync();
+
             var userList = await (from user in _context.Users
                                   orderby user.UserName
                                   select new
@@ -55,14 +57,16 @@ namespace PortalApp.API.Controllers
             var userRoles = await _userManager.GetRolesAsync(user);
 
             var selectedRoles = roleEditDto.RoleNames;
-            selectedRoles = selectedRoles ?? new string[] {};
+            selectedRoles = selectedRoles ?? new string[] { };
             var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
 
-            if(!result.Succeeded){
+            if (!result.Succeeded)
+            {
                 return BadRequest("Failed to add to roles");
             }
             result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
-             if(!result.Succeeded){
+            if (!result.Succeeded)
+            {
                 return BadRequest("Failed to remove role");
             }
 
@@ -70,22 +74,47 @@ namespace PortalApp.API.Controllers
 
         }
 
-
-        [Authorize(Policy = "RequireHR")]
-        [HttpGet("allUser")]
-        public IActionResult GetAllUser()
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpDelete("user/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            return Ok("Only HR and Admin can see it");
+            if (id == null)
+            {
+                return BadRequest("Id is null");
+            }
+            var user = await _userManager.FindByIdAsync(id);
+            var roles = await _userManager.GetRolesAsync(user);
+            
+            foreach (var role in roles)
+            {
+                var removeRole = await _userManager.RemoveFromRoleAsync(user, role);
+            }
+            var delete = await _userManager.DeleteAsync(user);
+
+            if(delete.Succeeded) {
+                return Ok();
+            }
+            else {
+                return BadRequest("Delete not sucessfulled");
+            }
         }
 
         [Authorize(Policy = "RequireAdmin")]
         [HttpGet("teams")]
         public async Task<IActionResult> Teams()
         {
-
-            return Ok();
+            var teams = await _adminRepo.AllTeams();
+            return Ok(teams);
         }
 
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpGet("roles")]
+        public async Task<IActionResult> GetRoles()
+        {
+
+            var roles = await _adminRepo.AllRoles();
+            return Ok(roles);
+        }
 
     }
 }
