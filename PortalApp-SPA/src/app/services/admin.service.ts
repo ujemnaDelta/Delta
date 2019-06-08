@@ -26,4 +26,8 @@ constructor(private http: HttpClient) { }
   getTeam() {
     return this.http.get(this.baseUrl + 'admin/teams');
   }
+
+  getAllTeamManagment() {
+    return this.http.get(this.baseUrl + 'admin/teamsmanagment');
+  }
 }

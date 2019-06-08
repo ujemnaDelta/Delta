@@ -52,25 +52,21 @@ namespace PortalApp.API.Controllers
         [HttpPost("editRoles/{UserName}")]
         public async Task<IActionResult> EditRoles(string UserName, RoleEditDto roleEditDto)
         {
-            var user = await _userManager.FindByNameAsync(UserName);
-
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            var selectedRoles = roleEditDto.RoleNames;
-            selectedRoles = selectedRoles ?? new string[] { };
-            var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
+            var result = await _adminRepo.EditRoles(UserName,roleEditDto);
 
             if (!result.Succeeded)
             {
                 return BadRequest("Failed to add to roles");
             }
-            result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
+
+            result = await _adminRepo.DeleteFromRoles(UserName,roleEditDto);
             if (!result.Succeeded)
             {
                 return BadRequest("Failed to remove role");
             }
 
-            return Ok(await _userManager.GetRolesAsync(user));
+                var userToReturned = await _adminRepo.GetUserRoles(UserName);
+            return Ok(userToReturned);
 
         }
 
@@ -78,19 +74,12 @@ namespace PortalApp.API.Controllers
         [HttpDelete("user/{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            if (id == null)
+            if (id == null || id == "0")
             {
-                return BadRequest("Id is null");
+                return BadRequest("Bad Id");
             }
-            var user = await _userManager.FindByIdAsync(id);
-            var roles = await _userManager.GetRolesAsync(user);
             
-            foreach (var role in roles)
-            {
-                var removeRole = await _userManager.RemoveFromRoleAsync(user, role);
-            }
-            var delete = await _userManager.DeleteAsync(user);
-
+            var delete = await _adminRepo.DeleteUser(id);
             if(delete.Succeeded) {
                 return Ok();
             }
@@ -116,5 +105,22 @@ namespace PortalApp.API.Controllers
             return Ok(roles);
         }
 
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpGet("teamsmanagment")]
+        public async Task<IActionResult> GetTeamsWithLeaders() {
+
+            var TeamReturned = await (from team in _context.Team
+                                  select new
+                                  {
+                                      Id = team.Id,
+                                      Team = team.NameOfTeam,
+                                      LeaderId = team.LeaderId,
+                                      LeaderName = _context.UserTeam.Include(p => p.User)
+                                        .Where(p => p.UserId == team.LeaderId).Select(p => p.User.FullUserName).FirstOrDefault(),
+                                      TeamMates = _context.UserTeam.Include(p => p.User).Where( p => p.TeamId == team.Id).Select(p => p.User.FullUserName).ToList()
+                                  }).ToListAsync();
+
+            return Ok(TeamReturned);
+        }
     }
 }

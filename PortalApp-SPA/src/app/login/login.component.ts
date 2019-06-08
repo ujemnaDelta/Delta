@@ -4,6 +4,7 @@ import { modelGroupProvider } from '@angular/forms/src/directives/ng_model_group
 import { AlertifyService } from '../services/alertify.service';
 import { Router } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
+import {FormControl, Validators, FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -13,13 +14,20 @@ import { AuthGuard } from '../guards/auth.guard';
 export class LoginComponent implements OnInit {
   hide = true;
   model: any = {};
-  constructor(private router: Router, public authService: AuthService, private alertify: AlertifyService, public guard: AuthGuard) { }
+  myForm = this.fb.group({
+    userName: ['', [Validators.required]],
+    userPassword: ['',  [Validators.required, Validators.minLength(8)]],
+
+});
+
+  constructor(private router: Router, public authService: AuthService, private alertify: AlertifyService, public guard: AuthGuard,
+    private fb: FormBuilder) { }
 
   ngOnInit() {
   }
-  login() {
-    this.authService.login(this.model).subscribe(next => {
-      this.alertify.success('Logged in successfully');
+  login(form: FormControl) {
+    this.authService.login(form.value).subscribe(next => {
+      this.alertify.success('Zalogowano pomyślnie');
     }, error => {
       this.alertify.error(error);
     }, () => {

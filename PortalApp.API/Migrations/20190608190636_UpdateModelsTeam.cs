@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PortalApp.API.Migrations
 {
-    public partial class UpdateModelsPart2 : Migration
+    public partial class UpdateModelsTeam : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,19 +47,6 @@ namespace PortalApp.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Team",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    NameOfTeam = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Team", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,6 +169,35 @@ namespace PortalApp.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Team",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NameOfTeam = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: true),
+                    UserRoleId = table.Column<int>(nullable: true),
+                    LeaderId = table.Column<int>(nullable: false),
+                    UserModelId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Team", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Team_AspNetUsers_UserModelId",
+                        column: x => x.UserModelId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Team_AspNetUserRoles_UserId_UserRoleId",
+                        columns: x => new { x.UserId, x.UserRoleId },
+                        principalTable: "AspNetUserRoles",
+                        principalColumns: new[] { "UserId", "RoleId" },
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserTeam",
                 columns: table => new
                 {
@@ -243,6 +259,16 @@ namespace PortalApp.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Team_UserModelId",
+                table: "Team",
+                column: "UserModelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Team_UserId_UserRoleId",
+                table: "Team",
+                columns: new[] { "UserId", "UserRoleId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserTeam_TeamId",
                 table: "UserTeam",
                 column: "TeamId");
@@ -260,9 +286,6 @@ namespace PortalApp.API.Migrations
                 name: "AspNetUserLogins");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
-
-            migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
@@ -272,10 +295,13 @@ namespace PortalApp.API.Migrations
                 name: "Values");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Team");
 
             migrationBuilder.DropTable(
-                name: "Team");
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

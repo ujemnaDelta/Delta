@@ -17,7 +17,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormGroupDirective } from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import {AuthService} from 'src/app/services/auth.service';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -63,6 +63,8 @@ export function tokenGetter() {
    imports: [
       BrowserModule,
       CommonModule,
+      FormsModule,
+      ReactiveFormsModule,
       MatToolbarModule,
       MatTabsModule,
       MatRadioModule,

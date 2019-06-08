@@ -4,7 +4,7 @@ body, html {
 
 .example-large-box {
   display:flex;
-  width:1000px;
+  width:1200px;
   margin: 20px;
   padding: 30px;
   border-radius: 8px;
@@ -16,5 +16,5 @@ body, html {
 }
 
 .main {
-  height: 92.1vh;
+  height: 100vh;
 }

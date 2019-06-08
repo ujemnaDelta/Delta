@@ -53,32 +53,39 @@
   </mdb-navbar>
 <!--Navbar-->
 <div class = "justify-content-center d-flex my-4 " *ngIf="!loggedIn()" >
-<form  #loginForm="ngForm"  class="text-center border border-light p-5 w-25 cloudy-knoxville-gradient z-depth-3 mt-5" (ngSubmit)="login()">
+<form  [formGroup]="myForm" class="text-center border border-light p-5 w-25 cloudy-knoxville-gradient z-depth-3 mt-5" (submit)="login(myForm)">
 
     <p class="h4 mb-4">Sign in</p>
 
     <div class="form-container"  >
         <mat-form-field appearance="outline">
-            <mat-label>Username</mat-label>
-            <input matInput placeholder="Enter your login" name="UserName"
-            required [(ngModel)]="model.userName">
+            <mat-label>Użytkownik</mat-label>
+            <input matInput placeholder="Podaj swój login" name="userName" type="text" formControlName="userName">
             <mat-icon matSuffix>person</mat-icon>
+            <mat-error>Login jest <strong>wymagany</strong></mat-error>
           </mat-form-field>
 
 
-        <mat-form-field appearance="outline">
-            <mat-label>Password</mat-label>
-            <input matInput placeholder="Enter your password" name="UserPassword"
-             type="password" required [(ngModel)]="model.userPassword">
-             <mat-icon matSuffix>lock</mat-icon>
+          <mat-form-field appearance="outline">
+            <mat-label>Hasło</mat-label>
+            <input matInput placeholder="Enter your password" name="userPassword" type="password" formControlName="userPassword">
+            <mat-icon matSuffix>lock</mat-icon>
+            <mat-error *ngIf="!myForm.controls.userPassword.hasError('required') else minLength">
+              Hasło jest <strong>za krótkie</strong>
+            </mat-error>
+            <ng-template #minLength>
+            <mat-error *ngIf="!myForm.controls.userPassword.hasError('minLength')">
+             Hasło jest <strong>required</strong>
+            </mat-error>
+          </ng-template>
           </mat-form-field>
 
 </div>
-    <button [disabled]="!loginForm.valid" class="btn btn-success my-2 my-sm-0 h2" type="submit">Login</button>
+<button mat-raised-button class="btn-login text-white w-50 my-sm-0 my-2 mat-primary" [disabled]="!myForm.valid"  id="submitButton" type="submit"><mat-icon class="mr-1">person_add</mat-icon>Submit</button>
     <!-- Register -->
     <div class = "my-4">
-    <p>Not a member?
-        <a href="">Register</a>
+    <p>Nie masz konta?
+        <a href="">Kontakt</a>
     </p>
   </div>
 </form>

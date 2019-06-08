@@ -10,5 +10,7 @@ namespace PortalApp.API.Models
 
         public ICollection<UserTeam> UserTeams {get; set;}
         public ICollection<UserRole> UserRoles { get; set; }
+
+        public ICollection<Team> Teams{get; set;}
     }
 }

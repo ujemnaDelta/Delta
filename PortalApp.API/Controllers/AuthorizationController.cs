@@ -41,21 +41,26 @@ namespace PortalApp.API.Controllers
         public async Task<IActionResult> Register(UserForRegisterDTO userForRegister)
         {
 
-            userForRegister.UserName = userForRegister.UserName.ToLower();
+            
 
             if (await repositoryGlobalField.IfUserExists(userForRegister.UserName))
             {
-                return BadRequest("UserName already exists");
+                return BadRequest("Login is already exists");
             }
-
+            
             var result = await repositoryGlobalField.RegisterUser(userForRegister);
+            if(result == null) {
+                    return BadRequest("Ten zespół ma już swojego lidera");
+                }
 
             if(result.Succeeded) {
                 return StatusCode(201);
             }
             else {
-                return BadRequest("Something error with registry");
+                    return BadRequest("Proces rejestracji nie został wykonany poprawnie");
             }
+            
+            
         }
 
         [HttpPost("login")]

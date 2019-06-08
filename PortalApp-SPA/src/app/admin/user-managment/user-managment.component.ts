@@ -13,16 +13,26 @@ import { equal } from 'assert';
   styleUrls: ['./user-managment.component.css']
 })
 export class UserManagmentComponent implements OnInit {
+
   displayedColumns: string[] = ['id', 'UserName', 'fullUserName', 'roles', 'team', 'Action'];
   users: MatTableDataSource<User>;
   searchKey: string;
   constructor(private adminService: AdminService, private dialog: MatDialog) {
-  }
+    dialog.afterAllClosed
+    .subscribe(() => {
+    // update a variable or call a function when the dialog closes
+      this.getAll();
+    }
+  );
+}
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
+   this.getAll();
+  }
+  getAll() {
     this.adminService.getUsersWithRoles().subscribe((user: User[]) => {
       this.users = new MatTableDataSource(user);
       this.users.paginator = this.paginator;
