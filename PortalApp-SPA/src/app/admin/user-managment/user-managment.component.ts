@@ -5,6 +5,7 @@ import {MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig} f
 import { AddPersonDialogComponent } from '../admin-panel/addPerson-dialog/addPerson-dialog.component';
 import { DeleteDialogComponent } from '../admin-panel/delete-dialog/delete-dialog.component';
 import { equal } from 'assert';
+import { AlertifyService } from 'src/app/services/alertify.service';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class UserManagmentComponent implements OnInit {
   displayedColumns: string[] = ['id', 'UserName', 'fullUserName', 'roles', 'team', 'Action'];
   users: MatTableDataSource<User>;
   searchKey: string;
-  constructor(private adminService: AdminService, private dialog: MatDialog) {
+  constructor(private adminService: AdminService, private dialog: MatDialog, private alertify: AlertifyService) {
     dialog.afterAllClosed
     .subscribe(() => {
     // update a variable or call a function when the dialog closes
@@ -64,7 +65,10 @@ onCreateDialog() {
 
 
 onCreateDeleteDialog(user: User) {
-  const dialogConfig2 = new MatDialogConfig();
+  if (user.userName === 'Admin' || user.userName === 'HR' || user.userName === 'Leader') {
+    this.alertify.error('Nie możesz usunąć tego konta');
+  } else {
+    const dialogConfig2 = new MatDialogConfig();
   dialogConfig2.disableClose = true;
   dialogConfig2.autoFocus = true;
   dialogConfig2.width = '50%';
@@ -73,6 +77,8 @@ onCreateDeleteDialog(user: User) {
     team: user.team, roles: user.roles};
   this.dialog.open(DeleteDialogComponent, dialogConfig2);
 }
+  }
+
 }
 
 

@@ -6,6 +6,9 @@ import { AddPersonDialogComponent } from '../admin-panel/addPerson-dialog/addPer
 import { DeleteDialogComponent } from '../admin-panel/delete-dialog/delete-dialog.component';
 import { TeamManagment } from 'src/app/models/TeamManagment';
 import { trigger, state, transition, style, animate } from '@angular/animations';
+import { AddusertoteamDialogComponent } from '../admin-panel/addusertoteam-dialog/addusertoteam-dialog.component';
+import { AddteamDialogComponent } from '../admin-panel/addteam-dialog/addteam-dialog.component';
+import { DeleteteamDialogComponent } from '../admin-panel/deleteteam-dialog/deleteteam-dialog.component';
 
 @Component({
   selector: 'app-team-managment',
@@ -13,17 +16,26 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
   styleUrls: ['./team-managment.component.css'],
 })
 export class TeamManagmentComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'team', 'leader', 'teamMates', 'Action'];
+  displayedColumns: string[] = ['id', 'team', 'leaderName', 'teamMates', 'Action'];
   teams: MatTableDataSource<TeamManagment>;
   searchKey: string;
 
   constructor(private adminService: AdminService, private dialog: MatDialog) {
+    dialog.afterAllClosed
+    .subscribe(() => {
+    // update a variable or call a function when the dialog closes
+      this.getAll();
+    }
+  );
   }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
+    this.getAll();
+  }
+  getAll() {
     this.adminService.getAllTeamManagment().subscribe((team: TeamManagment[]) => {
       this.teams = new MatTableDataSource(team);
       this.teams.paginator = this.paginator;
@@ -50,17 +62,22 @@ onCreateDialog() {
   dialogConfig.disableClose = true;
   dialogConfig.autoFocus = true;
   dialogConfig.width = '50%';
-  this.dialog.open(AddPersonDialogComponent, dialogConfig);
+  this.dialog.open(AddusertoteamDialogComponent, dialogConfig);
 }
-
-onCreateDeleteDialog(user: User) {
+onCreateAddTeamDialog() {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = true;
+  dialogConfig.width = '50%';
+  this.dialog.open(AddteamDialogComponent, dialogConfig);
+}
+onCreateDeleteDialog(user: TeamManagment) {
   const dialogConfig2 = new MatDialogConfig();
   dialogConfig2.disableClose = true;
   dialogConfig2.autoFocus = true;
   dialogConfig2.width = '50%';
-  // user = this.users.data.find(p => p.id === user.id);
-  // dialogConfig2.data = { id: user.id, userName : user.userName, fullUserName: user.fullUserName,
-  //   team: user.team, roles: user.roles};
-  // this.dialog.open(DeleteDialogComponent, dialogConfig2);
+  user = this.teams.data.find(p => p.id === user.id);
+   dialogConfig2.data = { id: user.id, leaderName : user.leaderName, team: user.team};
+   this.dialog.open(DeleteteamDialogComponent, dialogConfig2);
 }
 }

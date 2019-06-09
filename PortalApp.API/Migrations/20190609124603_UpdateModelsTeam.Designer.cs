@@ -9,7 +9,7 @@ using PortalApp.API.Data;
 namespace PortalApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190608190636_UpdateModelsTeam")]
+    [Migration("20190609124603_UpdateModelsTeam")]
     partial class UpdateModelsTeam
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -262,7 +262,7 @@ namespace PortalApp.API.Migrations
                         .HasForeignKey("UserModelId");
 
                     b.HasOne("PortalApp.API.Models.UserRole", "User")
-                        .WithMany("Teams")
+                        .WithMany()
                         .HasForeignKey("UserId", "UserRoleId");
                 });
 

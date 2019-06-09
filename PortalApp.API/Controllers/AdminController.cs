@@ -122,5 +122,90 @@ namespace PortalApp.API.Controllers
 
             return Ok(TeamReturned);
         }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpPost("userteam")]
+        public async Task<IActionResult> AddUserToTeam(UserForTeamDto userTeamDto)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.UserName == userTeamDto.UserLogin);
+            var team = _context.Team.FirstOrDefault(x => x.NameOfTeam == userTeamDto.UserTeam);
+
+            if(user == null || team == null) {
+
+             return BadRequest("Nie ma takiego użytkownika lub zespołu");
+
+            }
+            if(await _context.UserTeam.AnyAsync(x=> x.UserId == user.Id)){
+                return BadRequest("Ten użytkownik już ma swój team. Zmień jego team na panelu użytkownika");
+            }
+            UserTeam userTeam = new UserTeam() {
+                TeamId = team.Id,
+                UserId = user.Id
+            };
+
+            await _context.UserTeam.AddAsync(userTeam);
+            return StatusCode(201);
+        }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpDelete("team/{id}")]
+        public async Task<IActionResult> DeleteTeam(string id)
+        {
+            if (id == null || id == "0")
+            {
+                return BadRequest("Złe id");
+            }
+            int TeamId = int.Parse(id);
+            var team = await _context.Team.FirstOrDefaultAsync(x=> x.Id == TeamId);
+            var UserTeam = await _context.UserTeam.Where( x=> x.TeamId == team.Id).ToListAsync();
+
+            if(UserTeam == null || team == null) {
+                return BadRequest("Nie znalazłem zespołu o takim id lub nie istnieje taka osoba");
+            }
+
+            foreach (var user in UserTeam)
+            {
+                var removeRole = _context.UserTeam.Remove(user);
+                
+            }
+            var result = _context.Remove(team);
+            await _context.SaveChangesAsync();
+            return Ok();
+           
+        }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpGet("userslogin/{username}")]
+        public async Task<IActionResult> GetUserLoginByName(string username)
+        {
+
+            var user = await _context.Users.Where(x=> x.FullUserName == username).ToListAsync();
+            if(user == null) {
+                BadRequest("Brak takich użytkowników");
+            }
+            return Ok(user);
+        }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpPost("teams")]
+        public async Task<IActionResult> CreateTeam(TeamForTeamsDto team)
+        {
+            if(team == null || team.TeamName == " " || team.TeamName == "") {
+                return BadRequest("Nie można stworzyć zespołu bez nazwy");
+            }
+            if(await _context.Team.AnyAsync(a=> a.NameOfTeam == team.TeamName)){
+                return BadRequest("Taki zespoł już istnieje");
+            }
+           
+            var Team = new Team() {
+                NameOfTeam = team.TeamName,
+              
+            };
+
+             var result = await _context.Team.AddAsync(Team);
+             await _context.SaveChangesAsync();
+             var b = await _context.Team.ToListAsync();
+            return StatusCode(201);
+        }
     }
 }

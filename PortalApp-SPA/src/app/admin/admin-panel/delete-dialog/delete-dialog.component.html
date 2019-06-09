@@ -4,18 +4,21 @@
 
   </mat-toolbar>
 <div mat-dialog-content>
-<p>{{user.id}}</p>
-
-<p>{{user.team}}</p>
-<p>{{user.roles}}</p>
+<br>
+<p class="text-center"><strong class="h5">Czy na pewno chcesz usunąć tego użytkownika ?</strong></p>
+<br>
+<p><strong class="h6">Imie i nazwisko: </strong> {{user.fullUserName}}</p>
+<p><strong class="h6">Login: </strong> {{user.userName}}</p>
+<p><strong class="h6">Zespół: </strong> {{user.team}}</p>
+<p><strong class="h6">Rola: </strong> {{user.roles}}</p>
 </div>
 
 
 <div class="main-buttons">
-  <button mat-raised-button color="warn" >
+  <button mat-raised-button class="bg-success text-white" (click)="onClose()" >
     <mat-icon class="mr-1">clear_all</mat-icon>Cancel
   </button>
-  <button mat-raised-button class="bg-success text-white w-25" id="submitButton" type="submit">
+  <button mat-raised-button color="warn" class=" text-white w-25" id="submitButton" type="submit" (click)="deleteUser()">
     <mat-icon class="mr-1">person_add</mat-icon>Delete user
   </button>
 </div>

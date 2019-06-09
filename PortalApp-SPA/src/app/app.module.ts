@@ -37,6 +37,9 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { AdminService } from './services/admin.service';
 import { AddPersonDialogComponent } from './admin/admin-panel/addPerson-dialog/addPerson-dialog.component';
 import { DeleteDialogComponent } from './admin/admin-panel/delete-dialog/delete-dialog.component';
+import { AddusertoteamDialogComponent } from './admin/admin-panel/addusertoteam-dialog/addusertoteam-dialog.component';
+import { AddteamDialogComponent } from './admin/admin-panel/addteam-dialog/addteam-dialog.component';
+import { DeleteteamDialogComponent } from './admin/admin-panel/deleteteam-dialog/deleteteam-dialog.component';
 
 
 export function tokenGetter() {
@@ -58,7 +61,10 @@ export function tokenGetter() {
       UserManagmentComponent,
       TeamManagmentComponent,
       AddPersonDialogComponent,
-      DeleteDialogComponent
+      DeleteDialogComponent,
+      AddusertoteamDialogComponent,
+      AddteamDialogComponent,
+      DeleteteamDialogComponent
    ],
    imports: [
       BrowserModule,
@@ -108,6 +114,7 @@ export function tokenGetter() {
    bootstrap: [
       AppComponent
    ],
-   entryComponents: [AddPersonDialogComponent, DeleteDialogComponent]
+   entryComponents: [AddPersonDialogComponent, DeleteDialogComponent,
+    AddusertoteamDialogComponent, AddteamDialogComponent, DeleteteamDialogComponent]
 })
 export class AppModule { }

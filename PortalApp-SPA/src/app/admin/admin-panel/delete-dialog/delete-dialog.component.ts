@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { User } from 'src/app/models/User';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { AdminService } from 'src/app/services/admin.service';
+import { AlertifyService } from 'src/app/services/alertify.service';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -10,10 +12,22 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 export class DeleteDialogComponent implements OnInit {
 constructor(
   public dialogRef: MatDialogRef<DeleteDialogComponent>,
-  @Inject(MAT_DIALOG_DATA) public user: User) {}
+  @Inject(MAT_DIALOG_DATA) public user: User,
+  private adminService: AdminService,
+  private alertify: AlertifyService) {}
 
   ngOnInit() {
-    console.log(this.user);
-  }
 
+  }
+  deleteUser() {
+    this.adminService.deleteUser(this.user.id).subscribe(() => {
+      this.alertify.success('Pomyślnie usunięto użytkownika');
+      this.onClose();
+    }, error => {
+      this.alertify.error(error);
+    });
+  }
+  onClose() {
+    this.dialogRef.close();
+  }
 }

@@ -20,8 +20,8 @@ namespace PortalApp.API.Data
 
         public async Task<List<string>> AllRoles()
         {
-            var roles = await _context.UserRoles.Include(p => p.Role)
-                                        .Select(p => p.Role.Name).Distinct().ToListAsync();
+            var roles = await _context.Roles
+                                        .Select(p => p.Name).ToListAsync();
             return roles;
         }
 
@@ -54,11 +54,9 @@ namespace PortalApp.API.Data
         {
             var user = await _userManager.FindByIdAsync(id);
             var roles = await _userManager.GetRolesAsync(user);
-            
-            foreach (var role in roles)
-            {
-                var removeRole = await _userManager.RemoveFromRoleAsync(user, role);
-            }
+
+            var removeRole = await _userManager.RemoveFromRoleAsync(user,roles.First());
+           
             var deleteUser = await _userManager.DeleteAsync(user);
 
             return deleteUser;

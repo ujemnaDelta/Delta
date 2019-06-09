@@ -1,9 +1,10 @@
-.title-center {
+.example-spacer {
   flex: 1 1 auto;
-  text-align: center;
+  border: 0;
 }
 button:focus {
   outline: 0 !important;
+  border: 0 !important;
 }
 .inputs {
   justify-content: space-between;

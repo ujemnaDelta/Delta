@@ -67,18 +67,10 @@ namespace PortalApp.API.Data
                     UserName = "Admin"
                     
                 };
-                var HRUser = new UserModel
-                {
-                    UserName = "HR"
-                };
-                var LeaderUser = new UserModel
-                {
-                    UserName = "ggrochowski"
-                };
+                
                 IdentityResult result = _userManager.CreateAsync(adminUser, "password").Result;
-                IdentityResult result2 = _userManager.CreateAsync(HRUser, "password").Result;
-                IdentityResult result3 = _userManager.CreateAsync(LeaderUser, "password").Result;
-                if(result.Succeeded && result2.Succeeded && result3.Succeeded)
+               
+                if(result.Succeeded)
                 {
                     var admin = _userManager.FindByNameAsync("Admin").Result;
                     _userManager.AddToRolesAsync(admin, new [] {"Admin"}).Wait();

@@ -17,7 +17,7 @@ export class AddPersonDialogComponent implements OnInit {
   model: any = {};
   teams: any;
   roles: any;
-  constructor( public dialogRef: MatDialogRef<User>, private adminService: AdminService,
+  constructor( public dialogRef: MatDialogRef<AddPersonDialogComponent>, private adminService: AdminService,
     private alertify: AlertifyService, private authService: AuthService) { }
 
   ngOnInit() {

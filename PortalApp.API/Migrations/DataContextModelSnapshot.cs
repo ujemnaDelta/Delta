@@ -260,7 +260,7 @@ namespace PortalApp.API.Migrations
                         .HasForeignKey("UserModelId");
 
                     b.HasOne("PortalApp.API.Models.UserRole", "User")
-                        .WithMany("Teams")
+                        .WithMany()
                         .HasForeignKey("UserId", "UserRoleId");
                 });
 
