@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlertifyService } from 'src/app/services/alertify.service';
+import { AuthService } from 'src/app/services/auth.service';
+
 
 @Component({
   selector: 'app-leader-panel',
@@ -7,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeaderPanelComponent implements OnInit {
 
+  LeaderId: number;
   constructor() { }
 
   ngOnInit() {

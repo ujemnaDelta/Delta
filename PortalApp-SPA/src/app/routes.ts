@@ -18,9 +18,9 @@ export const appRoutes: Routes = [
     children: [
       {path: 'main', component: MainComponent},
       {path: 'team', component: TeamComponent},
-      {path: 'admin', component: AdminPanelComponent, data: {roles: ['Admin']}},
-      {path: 'hr', component: HrPanelComponent , data: { roles: ['HR'] }},
-      {path: 'leader', component: LeaderPanelComponent , data: { roles: ['Leader'] }},
+      {path: 'adminPanel', component: AdminPanelComponent, data: {roles: ['Admin']}},
+      {path: 'hrPanel', component: HrPanelComponent , data: { roles: ['HR'] }},
+      {path: 'leaderPanel', component: LeaderPanelComponent , data: { roles: ['Leader'] }},
     ]
   },
   {path: '**', redirectTo: '', pathMatch: 'full'},

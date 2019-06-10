@@ -1,0 +1,43 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+      <span>Dodaj osobę do zespołu</span>
+      <span class="example-spacer"></span>
+      <button mat-mini-fab color="warn" (click) ="onClose()"><mat-icon>close</mat-icon></button>
+
+    </mat-toolbar-row>
+  </mat-toolbar>
+      <form [formGroup]="myForm" (submit)="Add(myForm)" class="text-center border border-light flex p-4 w-100 cloudy-knoxville-gradient" >
+          <div class="inputs">
+            <mat-form-field color="text-primary">
+              <mat-label>Wybierz osobę</mat-label>
+              <mat-select name="Osoba" formControlName="FullUserName">
+                <mat-option *ngFor="let user of users" [value]="user.fullUserName" (click)="GetUserLogin(user.fullUserName)">{{user.fullUserName}}</mat-option>
+              </mat-select>
+              <mat-icon matSuffix class="mat-primary">group</mat-icon>
+              <mat-error>Osoba jest <strong>wymagana</strong> </mat-error>
+            </mat-form-field>
+
+            <mat-form-field color="text-primary">
+              <mat-label>Wybierz Login osoby</mat-label>
+              <mat-select name="UserName" formControlName="UserLogin"  >
+                <mat-option *ngFor="let user of usersLogins" [value]="user.userName" (click) ="GetLoginName(myForm,user.userName)">{{user.userName}}</mat-option>
+              </mat-select>
+              <mat-icon matSuffix class="mat-primary">group</mat-icon>
+              <mat-error>Login jest <strong>wymagany</strong> </mat-error>
+            </mat-form-field>
+
+            <mat-form-field color="text-primary">
+              <mat-label>Wybierz zespoł</mat-label>
+              <mat-select name="Team" formControlName="UserTeam">
+                <mat-option *ngFor="let team of teams" [value]="team">{{team}}</mat-option>
+              </mat-select>
+              <mat-icon matSuffix class="mat-primary">group</mat-icon>
+              <mat-error>Zespół jest <strong>wymagany</strong> </mat-error>
+            </mat-form-field>
+          </div>
+            <div class="main-buttons">
+              <button mat-raised-button color="warn" (click)="myForm.reset()"> <mat-icon class="mr-1">clear_all</mat-icon>Clear</button>
+              <button mat-raised-button class="mat-primary text-white w-25" id="submitButton" [disabled]="!myForm.valid" type="submit"><mat-icon class="mr-1">person_add</mat-icon>Submit</button>
+            </div>
+
+    </form>

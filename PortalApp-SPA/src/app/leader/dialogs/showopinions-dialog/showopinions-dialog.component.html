@@ -1,0 +1,35 @@
+
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Opinie pracownika: {{userOpinion.name}}</span>
+    <span class="example-spacer"></span>
+    <button mat-mini-fab color="warn" (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<form  >
+<mat-accordion >
+  <mat-expansion-panel class="text-primary" *ngFor="let opinion of opinions" >
+    <mat-expansion-panel-header  >
+      <mat-panel-title>
+       <span>Data: <strong> {{opinion.created }} </strong> </span>
+      </mat-panel-title>
+      <mat-panel-description class="text-primary">
+          <span> Opinię wystawił : <strong> {{leader.fullUserName}} </strong> </span>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="example-container ">
+      <span><strong>Opinia: </strong></span>
+    <mat-form-field appearance="outline"class="mt-1" >
+      <textarea style="height: 150px; color:black" matInput name="mainText" type="text" [disabled]='true' placeholder="Opinia"> {{opinion.mainText}}</textarea>
+    </mat-form-field>
+    <span><strong>Notatka: </strong></span>
+    <mat-form-field appearance="outline" class="mt-1">
+        <textarea  style="height: 150px; color:black" matInput name="mainText" type="text" [disabled]='true' placeholder="Notatka"> {{opinion.leaderText}}</textarea>
+      </mat-form-field>
+  </div>
+  </mat-expansion-panel>
+</mat-accordion>
+</form>

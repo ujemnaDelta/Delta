@@ -1,0 +1,47 @@
+<mat-toolbar color="primary">
+<mat-toolbar-row>
+    <span>Add person</span>
+    <span class="example-spacer"></span>
+    <button mat-mini-fab color="warn" (click) ="onClose()"><mat-icon>close</mat-icon></button>
+
+  </mat-toolbar-row>
+</mat-toolbar>
+    <form #registerForm="ngForm" (ngSubmit)="register()" class="text-center border border-light flex p-4 w-100 cloudy-knoxville-gradient" >
+        <div class="inputs">
+          <mat-form-field>
+            <input matInput placeholder="FullName" name="FullName" type="text" [(ngModel)]="model.FullName">
+            <mat-icon matSuffix class="mat-primary">person</mat-icon>
+            <mat-error>This field is mandatory.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Login" name="UserName" type="text" [(ngModel)]="model.UserName">
+            <mat-icon matSuffix class="mat-primary">verified_user</mat-icon>
+            <mat-error>Invalid email address.</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Password" name="Password" type="password" [(ngModel)]="model.UserPassword">
+            <mat-icon matSuffix class="mat-primary">lock</mat-icon>
+          </mat-form-field>
+
+<mat-form-field color="text-primary">
+  <mat-label>Choose team</mat-label>
+  <mat-select name="team" [(ngModel)]="model.team">
+    <mat-option *ngFor="let team of teams" [value] ="team">{{team}}</mat-option>
+  </mat-select>
+  <mat-icon matSuffix class="mat-primary">group</mat-icon>
+</mat-form-field>
+
+<mat-form-field color="text-primary">
+    <mat-label>Choose role in system</mat-label>
+    <mat-select name="roles" [(ngModel)]="model.roles">
+      <mat-option *ngFor="let role of roles" [value] ="role">{{role}}</mat-option>
+    </mat-select>
+    <mat-icon matSuffix class="mat-primary">whatshot</mat-icon>
+  </mat-form-field>
+        </div>
+          <div class="main-buttons">
+            <button mat-raised-button color="warn" (click)="registerForm.resetForm()"> <mat-icon class="mr-1">clear_all</mat-icon>Clear</button>
+            <button mat-raised-button class="bg-success text-white w-25" id="submitButton"  type="submit"><mat-icon class="mr-1">person_add</mat-icon>Submit</button>
+          </div>
+
+  </form>

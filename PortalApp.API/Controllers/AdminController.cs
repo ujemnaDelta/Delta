@@ -14,25 +14,33 @@ namespace PortalApp.API.Controllers
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
     {
+        private readonly IAdminPanelRepository _adminRepo;
         private readonly DataContext _context;
         private readonly UserManager<UserModel> _userManager;
 
-        public AdminController(DataContext context, UserManager<UserModel> userManager)
+        public AdminController(DataContext context, UserManager<UserModel> userManager, IAdminPanelRepository adminRepo)
         {
             _context = context;
             _userManager = userManager;
+            _adminRepo = adminRepo;
         }
 
-        [Authorize(Policy = "AdminRole")]
-        [HttpGet("usersWithRoles")]
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpGet("userswithroles")]
         public async Task<IActionResult> GetUsersWithRoles()
         {
+            var asd = await _context.Users.FirstOrDefaultAsync();
+
             var userList = await (from user in _context.Users
-                                  orderby user.UserName
+                                  orderby user.Id
                                   select new
                                   {
                                       Id = user.Id,
                                       UserName = user.UserName,
+                                      FullUserName = user.FullUserName,
+                                      Position = user.Position,
+                                      Team = _context.UserTeam.Include(p => p.Team)
+                                        .Where(p => p.UserId == user.Id).Select(p => p.Team.NameOfTeam),
                                       Roles = (from userRole in user.UserRoles
                                                join role in _context.Roles
                                                on userRole.RoleId
@@ -41,43 +49,164 @@ namespace PortalApp.API.Controllers
                                   }).ToListAsync();
             return Ok(userList);
         }
-        [Authorize(Policy = "AdminRole")]
+        [Authorize(Policy = "RequireAdmin")]
         [HttpPost("editRoles/{UserName}")]
-        public async Task<IActionResult> EditRoles(string UserName, RoleEditDto roleEditDto) 
+        public async Task<IActionResult> EditRoles(string UserName, RoleEditDto roleEditDto)
         {
-            var user = await _userManager.FindByNameAsync(UserName);
+            var result = await _adminRepo.EditRoles(UserName,roleEditDto);
 
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            var selectedRoles = roleEditDto.RoleNames;
-            selectedRoles = selectedRoles ?? new string[] {};
-            var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
-
-            if(!result.Succeeded){
-                return BadRequest("Failed to add to roles");  
-            }
-            result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
-             if(!result.Succeeded){
-                return BadRequest("Failed to remove role");  
+            if (!result.Succeeded)
+            {
+                return BadRequest("Failed to add to roles");
             }
 
-            return Ok(await _userManager.GetRolesAsync(user));
+            result = await _adminRepo.DeleteFromRoles(UserName,roleEditDto);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Failed to remove role");
+            }
+
+                var userToReturned = await _adminRepo.GetUserRoles(UserName);
+            return Ok(userToReturned);
 
         }
 
-
-        [Authorize(Policy = "HRRole")]
-        [HttpGet("allUser")]
-        public IActionResult GetAllUser()
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpDelete("user/{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            return Ok("Only HR and Admin can see it");
+            if (id == null || id == "0")
+            {
+                return BadRequest("Bad Id");
+            }
+            
+            var delete = await _adminRepo.DeleteUser(id);
+            if(delete.Succeeded) {
+                return Ok();
+            }
+            else {
+                return BadRequest("Delete not sucessfulled");
+            }
         }
 
-        [Authorize(Policy = "LeaderRole")]
-        [HttpGet("teamUsers")]
-        public IActionResult GetTeamUsers()
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpGet("teams")]
+        public async Task<IActionResult> Teams()
         {
-            return Ok("Only Leader and Admin can see it");
+            var teams = await _adminRepo.AllTeams();
+            return Ok(teams);
+        }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpGet("roles")]
+        public async Task<IActionResult> GetRoles()
+        {
+
+            var roles = await _adminRepo.AllRoles();
+            return Ok(roles);
+        }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpGet("teamsmanagment")]
+        public async Task<IActionResult> GetTeamsWithLeaders() {
+
+            var TeamReturned = await (from team in _context.Team
+                                  select new
+                                  {
+                                      Id = team.Id,
+                                      Team = team.NameOfTeam,
+                                      LeaderId = team.LeaderId,
+                                      LeaderName = _context.UserTeam.Include(p => p.User)
+                                        .Where(p => p.UserId == team.LeaderId).Select(p => p.User.FullUserName).FirstOrDefault(),
+                                      TeamMates = _context.UserTeam.Include(p => p.User).Where( p => p.TeamId == team.Id).Select(p => p.User.FullUserName).ToList()
+                                  }).ToListAsync();
+
+            return Ok(TeamReturned);
+        }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpPost("userteam")]
+        public async Task<IActionResult> AddUserToTeam(UserForTeamDto userTeamDto)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.UserName == userTeamDto.UserLogin);
+            var team = _context.Team.FirstOrDefault(x => x.NameOfTeam == userTeamDto.UserTeam);
+
+            if(user == null || team == null) {
+
+             return BadRequest("Nie ma takiego użytkownika lub zespołu");
+
+            }
+            if(await _context.UserTeam.AnyAsync(x=> x.UserId == user.Id)){
+                return BadRequest("Ten użytkownik już ma swój team. Zmień jego team na panelu użytkownika");
+            }
+            UserTeam userTeam = new UserTeam() {
+                TeamId = team.Id,
+                UserId = user.Id
+            };
+
+            await _context.UserTeam.AddAsync(userTeam);
+            return StatusCode(201);
+        }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpDelete("team/{id}")]
+        public async Task<IActionResult> DeleteTeam(string id)
+        {
+            if (id == null || id == "0")
+            {
+                return BadRequest("Złe id");
+            }
+            int TeamId = int.Parse(id);
+            var team = await _context.Team.FirstOrDefaultAsync(x=> x.Id == TeamId);
+            var UserTeam = await _context.UserTeam.Where( x=> x.TeamId == team.Id).ToListAsync();
+
+            if(UserTeam == null || team == null) {
+                return BadRequest("Nie znalazłem zespołu o takim id lub nie istnieje taka osoba");
+            }
+
+            foreach (var user in UserTeam)
+            {
+                var removeRole = _context.UserTeam.Remove(user);
+                
+            }
+            var result = _context.Remove(team);
+            await _context.SaveChangesAsync();
+            return Ok();
+           
+        }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpGet("userslogin/{username}")]
+        public async Task<IActionResult> GetUserLoginByName(string username)
+        {
+
+            var user = await _context.Users.Where(x=> x.FullUserName == username).ToListAsync();
+            if(user == null) {
+                BadRequest("Brak takich użytkowników");
+            }
+            return Ok(user);
+        }
+
+        [Authorize(Policy = "RequireAdmin")]
+        [HttpPost("teams")]
+        public async Task<IActionResult> CreateTeam(TeamForTeamsDto team)
+        {
+            if(team == null || team.TeamName == " " || team.TeamName == "") {
+                return BadRequest("Nie można stworzyć zespołu bez nazwy");
+            }
+            if(await _context.Team.AnyAsync(a=> a.NameOfTeam == team.TeamName)){
+                return BadRequest("Taki zespoł już istnieje");
+            }
+           
+            var Team = new Team() {
+                NameOfTeam = team.TeamName,
+              
+            };
+
+             var result = await _context.Team.AddAsync(Team);
+             await _context.SaveChangesAsync();
+             var b = await _context.Team.ToListAsync();
+            return StatusCode(201);
         }
     }
 }

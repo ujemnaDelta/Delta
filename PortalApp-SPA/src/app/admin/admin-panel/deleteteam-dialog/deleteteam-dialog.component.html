@@ -1,0 +1,22 @@
+<mat-toolbar color="primary" >
+
+    <span class="title-center">Usuń zespoł</span>
+
+</mat-toolbar>
+<div mat-dialog-content>
+<br>
+<p class="text-center"><strong class="h5">Czy na pewno chcesz usunąć ten zespół?</strong></p>
+<br>
+<p><strong class="h6">Nazwa zespołu: </strong> {{team.team}}</p>
+<p><strong class="h6">Imie i nazwisko lidera: </strong> {{team.leaderName}}</p>
+</div>
+
+
+<div class="main-buttons">
+<button mat-raised-button class="bg-success text-white" (click)="onClose()" >
+  <mat-icon class="mr-1">clear_all</mat-icon>Powrót
+</button>
+<button mat-raised-button color="warn" class=" text-white w-25" id="submitButton" type="submit" (click)="deleteUser()">
+  <mat-icon class="mr-1">person_add</mat-icon>Usuń zespół
+</button>
+</div>

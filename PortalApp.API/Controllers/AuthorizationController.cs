@@ -23,36 +23,44 @@ namespace PortalApp.API.Controllers
     public class AuthorizationController : ControllerBase
     {
         private readonly IAuthorizationRepository repositoryGlobalField;
-
+        private readonly DataContext _context;
         private readonly IConfiguration configurationGlobalField;
         private readonly UserManager<UserModel> _userManager;
         private readonly SignInManager<UserModel> _signInManager;
 
-        public AuthorizationController(IConfiguration configuration, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager)
+        public AuthorizationController(DataContext context,IConfiguration configuration, UserManager<UserModel> userManager, SignInManager<UserModel> signInManager, IAuthorizationRepository repo)
         {
             configurationGlobalField = configuration;
+            repositoryGlobalField = repo;
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDTO userForRegister)
         {
 
-            userForRegister.UserName = userForRegister.UserName.ToLower();
+            
 
             if (await repositoryGlobalField.IfUserExists(userForRegister.UserName))
             {
-                return BadRequest("UserName already exists");
+                return BadRequest("Login is already exists");
             }
+            
+            var result = await repositoryGlobalField.RegisterUser(userForRegister);
+            if(result == null) {
+                    return BadRequest("Ten zespół ma już swojego lidera");
+                }
 
-            UserModel newUser = new UserModel { UserName = userForRegister.UserName };
-
-            UserModel createdUser = await repositoryGlobalField.RegisterUser(newUser, userForRegister.UserPassword);
-
-            //return CreatedAtRoute();
-
-            return StatusCode(201);
+            if(result.Succeeded) {
+                return StatusCode(201);
+            }
+            else {
+                    return BadRequest("Proces rejestracji nie został wykonany poprawnie");
+            }
+            
+            
         }
 
         [HttpPost("login")]
@@ -75,8 +83,6 @@ namespace PortalApp.API.Controllers
             }
             return Unauthorized();
 
-
-
         }
         private async Task<string> GenerateJwtToken(UserModel user)
         {
@@ -92,19 +98,18 @@ namespace PortalApp.API.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
             //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configurationGlobalField.GetSection("AppSetting:Token").Value));
-            var keyByteArray = Encoding.ASCII.GetBytes("6d655cff-4640-42a2-acdc-cc9a6a22dd85");
-            var key = new SymmetricSecurityKey(keyByteArray);
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configurationGlobalField.GetSection("AppSettings:Token").Value));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
 
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Issuer = "Muminek",
-                Audience = "Audience",
+               
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(1),
-                SigningCredentials = creds
+                SigningCredentials = creds,
+          
             };
 
             var tokenhandler = new JwtSecurityTokenHandler();
