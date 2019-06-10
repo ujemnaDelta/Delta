@@ -32,12 +32,13 @@ namespace PortalApp.API.Controllers
             var asd = await _context.Users.FirstOrDefaultAsync();
 
             var userList = await (from user in _context.Users
-                                  orderby user.UserName
+                                  orderby user.Id
                                   select new
                                   {
                                       Id = user.Id,
                                       UserName = user.UserName,
                                       FullUserName = user.FullUserName,
+                                      Position = user.Position,
                                       Team = _context.UserTeam.Include(p => p.Team)
                                         .Where(p => p.UserId == user.Id).Select(p => p.Team.NameOfTeam),
                                       Roles = (from userRole in user.UserRoles

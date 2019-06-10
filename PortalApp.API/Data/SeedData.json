@@ -2,58 +2,69 @@
     {
         "Username": "Lola",
         "Password": "password",
-        "FullUserName" : "Lola Tracz"
+        "FullUserName" : "Lola Tracz",
+        "Position" : "Architect .Net Developer"
     },
     {
         "Username": "Gracek",
         "Password": "password",
-        "FullUserName" : "Gracek Nowak"
+        "FullUserName" : "Gracek Nowak",
+        "Position" : "Scrum Master"
     },
     {
         "Username": "Placek",
         "Password": "password",
-        "FullUserName" : "Placek Kowalski"
+        "FullUserName" : "Placek Kowalski",
+        "Position" : "Junior .Net Developer"
       
     },
     {
         "Username": "Tymon",
         "Password": "password",
-        "FullUserName" : "Tymon Taki"
+        "FullUserName" : "Tymon Taki",
+        "Position" : "Senior .Net Developer"
        
     },
     {
         "Username": "Bolek",
         "Password": "password",
-        "FullUserName" : "Bolek Kwas"
+        "FullUserName" : "Bolek Kwas",
+        "Position" : "Senior .Net Developer"
     },
     {
         "Username": "Lolek",
         "Password": "password",
-        "FullUserName" : "Lolek Racki"
+        "FullUserName" : "Lolek Racki",
+        "Position" : "Project Manager"
     },
     {
         "Username": "ppecetowiec",
         "Password": "password",
-        "FullUserName" : "Piotr Pecetowiec"
+        "FullUserName" : "Piotr Pecetowiec",
+        "Position" : ".Net Developer"
     },
     {
         "Username": "pkaczor",
         "Password": "password",
-        "FullUserName" : "Paweł Kaczor"
+        "FullUserName" : "Paweł Kaczor",
+        "Position" : "Scrum Master"
     },
     {
         "Username": "mracki",
         "Password": "password",
-        "FullUserName" : "Michał Racki"
+        "FullUserName" : "Michał Racki",
+        "Position" : "Junior .Net Developer"
     },
     {
         "Username": "wnowak",
         "Password": "password",
-        "FullUserName" : "Witold Nowak"
+        "FullUserName" : "Witold Nowak",
+        "Position" : "Senior .Net Developer"
     },
     {
         "Username": "kkacprowski",
         "Password": "password",
-        "FullUserName" : "Kacper Kacprowski"
+        "FullUserName" : "Kacper Kacprowski",
+        "Position" : ".Net Developer"
     }
 ]

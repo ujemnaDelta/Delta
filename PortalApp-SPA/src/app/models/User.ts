@@ -5,4 +5,5 @@ export interface User {
   UserPassword: string;
   team?: string[];
   roles?: string[];
+  position: string;
 }

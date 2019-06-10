@@ -42,11 +42,27 @@ namespace PortalApp.API.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FullUserName = table.Column<string>(nullable: true)
+                    FullUserName = table.Column<string>(nullable: true),
+                    Position = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Opinion",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    mainText = table.Column<string>(nullable: true),
+                    leaderText = table.Column<string>(nullable: true),
+                    Created = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Opinion", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,8 +191,6 @@ namespace PortalApp.API.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     NameOfTeam = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: true),
-                    UserRoleId = table.Column<int>(nullable: true),
                     LeaderId = table.Column<int>(nullable: false),
                     UserModelId = table.Column<int>(nullable: true)
                 },
@@ -189,11 +203,38 @@ namespace PortalApp.API.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserOpinion",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<int>(nullable: true),
+                    LeaderId = table.Column<int>(nullable: true),
+                    OpinionsId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserOpinion", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Team_AspNetUserRoles_UserId_UserRoleId",
-                        columns: x => new { x.UserId, x.UserRoleId },
-                        principalTable: "AspNetUserRoles",
-                        principalColumns: new[] { "UserId", "RoleId" },
+                        name: "FK_UserOpinion_AspNetUsers_LeaderId",
+                        column: x => x.LeaderId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserOpinion_Opinion_OpinionsId",
+                        column: x => x.OpinionsId,
+                        principalTable: "Opinion",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserOpinion_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -264,9 +305,19 @@ namespace PortalApp.API.Migrations
                 column: "UserModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Team_UserId_UserRoleId",
-                table: "Team",
-                columns: new[] { "UserId", "UserRoleId" });
+                name: "IX_UserOpinion_LeaderId",
+                table: "UserOpinion",
+                column: "LeaderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOpinion_OpinionsId",
+                table: "UserOpinion",
+                column: "OpinionsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserOpinion_UserId",
+                table: "UserOpinion",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserTeam_TeamId",
@@ -286,7 +337,13 @@ namespace PortalApp.API.Migrations
                 name: "AspNetUserLogins");
 
             migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "UserOpinion");
 
             migrationBuilder.DropTable(
                 name: "UserTeam");
@@ -295,13 +352,13 @@ namespace PortalApp.API.Migrations
                 name: "Values");
 
             migrationBuilder.DropTable(
-                name: "Team");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Opinion");
+
+            migrationBuilder.DropTable(
+                name: "Team");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

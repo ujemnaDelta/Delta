@@ -44,6 +44,8 @@ namespace PortalApp.API.Data
                 .IsRequired();
             });
 
+
+            
             // builder.Entity<UserModel>()
             //    .HasOne(a => a.UserTeams)
             //    .WithOne()
@@ -58,5 +60,9 @@ namespace PortalApp.API.Data
 
         public DbSet<Team> Team { get; set; }
         public DbSet<UserTeam> UserTeam { get; set; }
+        public DbSet<Opinion> Opinion{ get; set; }
+
+        public DbSet<UserOpinion> UserOpinion{ get; set; }
+
     }
 }

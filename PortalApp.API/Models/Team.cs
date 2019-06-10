@@ -9,10 +9,8 @@ namespace PortalApp.API.Models
 
         public string NameOfTeam {get; set;}
 
-        public UserRole User {get; set;}
 
         public ICollection<UserTeam> UsersTeam {get; set;}  
-
         public int LeaderId {get; set;}
         
       

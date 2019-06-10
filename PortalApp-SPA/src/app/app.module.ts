@@ -10,7 +10,7 @@ import {
 
   MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatPaginatorModule,
   MatSortModule, MatCheckboxModule, MatDatepickerModule, MatGridListModule, MatRadioModule,
-   MatNativeDateModule, MatOptionModule, MatSelectModule
+   MatNativeDateModule, MatOptionModule, MatSelectModule,
 
 } from '@angular/material';
 import { AppComponent } from './app.component';
@@ -40,7 +40,11 @@ import { DeleteDialogComponent } from './admin/admin-panel/delete-dialog/delete-
 import { AddusertoteamDialogComponent } from './admin/admin-panel/addusertoteam-dialog/addusertoteam-dialog.component';
 import { AddteamDialogComponent } from './admin/admin-panel/addteam-dialog/addteam-dialog.component';
 import { DeleteteamDialogComponent } from './admin/admin-panel/deleteteam-dialog/deleteteam-dialog.component';
-
+import { LeaderService } from './services/leader.service';
+import { LeaderTeamManagmentComponent } from './leader/LeaderTeamManagment/LeaderTeamManagment.component';
+import { AddOpinionDialogComponent } from './leader/dialogs/AddOpinionDialog/AddOpinionDialog.component';
+import { ShowopinionsDialogComponent } from './leader/dialogs/showopinions-dialog/showopinions-dialog.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -64,7 +68,11 @@ export function tokenGetter() {
       DeleteDialogComponent,
       AddusertoteamDialogComponent,
       AddteamDialogComponent,
-      DeleteteamDialogComponent
+      DeleteteamDialogComponent,
+      LeaderTeamManagmentComponent,
+      AddOpinionDialogComponent,
+      ShowopinionsDialogComponent
+
    ],
    imports: [
       BrowserModule,
@@ -85,6 +93,7 @@ export function tokenGetter() {
       MatTableModule,
       MatMenuModule,
       MatIconModule,
+      MatExpansionModule,
       MatDialogModule,
       MatProgressSpinnerModule,
       HttpClientModule,
@@ -92,6 +101,7 @@ export function tokenGetter() {
       MatCheckboxModule,
       MatGridListModule,
       FormsModule,
+      MatExpansionModule,
       MatPaginatorModule,
       MatSortModule,
       MDBBootstrapModule.forRoot(),
@@ -109,12 +119,15 @@ export function tokenGetter() {
       ErrorInterceptorProvider,
       AlertifyService,
       AuthGuard,
-      AdminService
+      AdminService,
+      LeaderService
    ],
    bootstrap: [
       AppComponent
    ],
    entryComponents: [AddPersonDialogComponent, DeleteDialogComponent,
-    AddusertoteamDialogComponent, AddteamDialogComponent, DeleteteamDialogComponent]
+    AddusertoteamDialogComponent, AddteamDialogComponent,
+    DeleteteamDialogComponent, AddOpinionDialogComponent,
+    ShowopinionsDialogComponent]
 })
 export class AppModule { }

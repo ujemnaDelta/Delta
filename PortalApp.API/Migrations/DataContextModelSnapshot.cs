@@ -84,6 +84,22 @@ namespace PortalApp.API.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("PortalApp.API.Models.Opinion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<string>("leaderText");
+
+                    b.Property<string>("mainText");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Opinion");
+                });
+
             modelBuilder.Entity("PortalApp.API.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -116,17 +132,11 @@ namespace PortalApp.API.Migrations
 
                     b.Property<string>("NameOfTeam");
 
-                    b.Property<int?>("UserId");
-
                     b.Property<int?>("UserModelId");
-
-                    b.Property<int?>("UserRoleId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserModelId");
-
-                    b.HasIndex("UserId", "UserRoleId");
 
                     b.ToTable("Team");
                 });
@@ -164,6 +174,8 @@ namespace PortalApp.API.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<string>("Position");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<bool>("TwoFactorEnabled");
@@ -181,6 +193,28 @@ namespace PortalApp.API.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("PortalApp.API.Models.UserOpinion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("LeaderId");
+
+                    b.Property<int?>("OpinionsId");
+
+                    b.Property<int?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LeaderId");
+
+                    b.HasIndex("OpinionsId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserOpinion");
                 });
 
             modelBuilder.Entity("PortalApp.API.Models.UserRole", b =>
@@ -258,10 +292,21 @@ namespace PortalApp.API.Migrations
                     b.HasOne("PortalApp.API.Models.UserModel")
                         .WithMany("Teams")
                         .HasForeignKey("UserModelId");
+                });
 
-                    b.HasOne("PortalApp.API.Models.UserRole", "User")
+            modelBuilder.Entity("PortalApp.API.Models.UserOpinion", b =>
+                {
+                    b.HasOne("PortalApp.API.Models.UserModel", "Leader")
                         .WithMany()
-                        .HasForeignKey("UserId", "UserRoleId");
+                        .HasForeignKey("LeaderId");
+
+                    b.HasOne("PortalApp.API.Models.Opinion", "Opinions")
+                        .WithMany()
+                        .HasForeignKey("OpinionsId");
+
+                    b.HasOne("PortalApp.API.Models.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("PortalApp.API.Models.UserRole", b =>

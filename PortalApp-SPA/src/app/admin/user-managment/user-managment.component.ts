@@ -15,7 +15,7 @@ import { AlertifyService } from 'src/app/services/alertify.service';
 })
 export class UserManagmentComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'UserName', 'fullUserName', 'roles', 'team', 'Action'];
+  displayedColumns: string[] = ['id', 'UserName', 'fullUserName', 'position', 'roles', 'team', 'Action'];
   users: MatTableDataSource<User>;
   searchKey: string;
   constructor(private adminService: AdminService, private dialog: MatDialog, private alertify: AlertifyService) {
@@ -57,7 +57,7 @@ export class UserManagmentComponent implements OnInit {
 
 onCreateDialog() {
   const dialogConfig = new MatDialogConfig();
-  dialogConfig.disableClose = true;
+  dialogConfig.disableClose = false;
   dialogConfig.autoFocus = true;
   dialogConfig.width = '50%';
   this.dialog.open(AddPersonDialogComponent, dialogConfig);
@@ -69,12 +69,12 @@ onCreateDeleteDialog(user: User) {
     this.alertify.error('Nie możesz usunąć tego konta');
   } else {
     const dialogConfig2 = new MatDialogConfig();
-  dialogConfig2.disableClose = true;
+    dialogConfig2.disableClose = false;
   dialogConfig2.autoFocus = true;
   dialogConfig2.width = '50%';
   user = this.users.data.find(p => p.id === user.id);
   dialogConfig2.data = { id: user.id, userName : user.userName, fullUserName: user.fullUserName,
-    team: user.team, roles: user.roles};
+    team: user.team, roles: user.roles, position: user.position};
   this.dialog.open(DeleteDialogComponent, dialogConfig2);
 }
   }

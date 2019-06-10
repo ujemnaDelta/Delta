@@ -44,4 +44,8 @@ loggedIn() {
     });
     return isMatch;
   }
+  returnLeaderId(): number {
+    const LeaderId = this.decodedToken.nameid as number;
+    return LeaderId;
+  }
 }

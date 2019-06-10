@@ -59,25 +59,25 @@ export class TeamManagmentComponent implements OnInit {
 
 onCreateDialog() {
   const dialogConfig = new MatDialogConfig();
-  dialogConfig.disableClose = true;
+  dialogConfig.disableClose = false;
   dialogConfig.autoFocus = true;
   dialogConfig.width = '50%';
   this.dialog.open(AddusertoteamDialogComponent, dialogConfig);
 }
 onCreateAddTeamDialog() {
   const dialogConfig = new MatDialogConfig();
-  dialogConfig.disableClose = true;
+  dialogConfig.disableClose = false;
   dialogConfig.autoFocus = true;
   dialogConfig.width = '50%';
   this.dialog.open(AddteamDialogComponent, dialogConfig);
 }
 onCreateDeleteDialog(user: TeamManagment) {
-  const dialogConfig2 = new MatDialogConfig();
-  dialogConfig2.disableClose = true;
-  dialogConfig2.autoFocus = true;
-  dialogConfig2.width = '50%';
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = false;
+  dialogConfig.autoFocus = true;
+  dialogConfig.width = '50%';
   user = this.teams.data.find(p => p.id === user.id);
-   dialogConfig2.data = { id: user.id, leaderName : user.leaderName, team: user.team};
-   this.dialog.open(DeleteteamDialogComponent, dialogConfig2);
+   dialogConfig.data = { id: user.id, leaderName : user.leaderName, team: user.team};
+   this.dialog.open(DeleteteamDialogComponent, dialogConfig);
 }
 }

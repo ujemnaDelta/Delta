@@ -6,8 +6,10 @@ namespace PortalApp.API.Models
 {
     public class UserModel : IdentityUser<int>
     {
+       
         public string FullUserName { get; set; }
 
+        public string Position {get; set;}
         public ICollection<UserTeam> UserTeams {get; set;}
         public ICollection<UserRole> UserRoles { get; set; }
 

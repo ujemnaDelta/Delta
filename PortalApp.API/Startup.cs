@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -42,6 +43,9 @@ namespace PortalApp.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            culture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+
             services.AddCors();
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             IdentityBuilder builder = services.AddIdentityCore<UserModel>(opt =>{
@@ -85,6 +89,7 @@ namespace PortalApp.API
             
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
             services.AddScoped<IAdminPanelRepository, AdminRepository>();
+            services.AddScoped<ILeaderRepository, LeaderRepository>();
             services.AddTransient<Seed>();
         }
 

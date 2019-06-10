@@ -7,12 +7,9 @@ namespace PortalApp.API.Data
 {
     public interface IAdminPanelRepository
     {
-         Task<List<string>> AllRoles();
-         Task<List<string>> AllTeams();
-
-
-       Task<IdentityResult> DeleteUser(string id);
-
+        Task<List<string>> AllRoles();
+        Task<List<string>> AllTeams();
+        Task<IdentityResult> DeleteUser(string id);
         Task<IdentityResult> EditRoles(string UserName, RoleEditDto roleEditDto);
         Task<IList<string>> GetUserRoles(string UserName);
         Task<IdentityResult> DeleteFromRoles(string UserName, RoleEditDto roleEditDto);

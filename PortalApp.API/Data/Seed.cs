@@ -75,11 +75,6 @@ namespace PortalApp.API.Data
                     var admin = _userManager.FindByNameAsync("Admin").Result;
                     _userManager.AddToRolesAsync(admin, new [] {"Admin"}).Wait();
 
-                    var hr = _userManager.FindByNameAsync("HR").Result;
-                    _userManager.AddToRolesAsync(hr, new [] {"HR"}).Wait();
-
-                    var leader = _userManager.FindByNameAsync("ggrochowski").Result;
-                    _userManager.AddToRolesAsync(leader, new [] {"Leader"}).Wait();
                 }
             }
         }

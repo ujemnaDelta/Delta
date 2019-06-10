@@ -1,0 +1,53 @@
+<div class="container-fluid">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Dodaj opinię</span>
+      <span class="example-spacer"></span>
+      <button mat-mini-fab color="warn" (click)="onClose()">
+        <mat-icon>close</mat-icon>
+      </button>
+
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <form [formGroup]="myForm" (submit)="Add(myForm)"
+    class="text-center border border-light flex p-4 w-100 cloudy-knoxville-gradient">
+    <div class="inputs">
+      <mat-form-field>
+        <input matInput name="evaluatedId" type="number" formControlName="evaluatedId" placeholder="Id pracownika">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput name="name" type="text" formControlName="name" placeholder="Imię i nazwisko">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput name="position" type="text" formControlName="position" placeholder="Stanowisko">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput name="created" type="text" formControlName="created" placeholder="Data">
+      </mat-form-field>
+      <mat-form-field class="mt-3">
+        <mat-label><strong>Twoja opinia</strong></mat-label>
+        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2"
+          cdkAutosizeMaxRows="8" name="mainText" type="text" formControlName="mainText" placeholder="Opinia"></textarea>
+        <mat-error>Twoja opinia jest wymagana</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mt-3 ">
+        <mat-label><strong>Twoje notatki</strong> (niewidoczne dla pracownika)</mat-label>
+        <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2"
+          cdkAutosizeMaxRows="8" name="leaderText" type="text" formControlName="leaderText"
+          placeholder="Twoje Notatki"></textarea>
+
+      </mat-form-field>
+
+
+    </div>
+    <div class="main-buttons">
+      <button mat-raised-button class="text-white w-25 mat-primary" [disabled]="!myForm.valid" id="submitButton"
+        type="submit">
+        <mat-icon class="mr-1">person_add</mat-icon>Submit
+      </button>
+    </div>
+
+  </form>
+</div>

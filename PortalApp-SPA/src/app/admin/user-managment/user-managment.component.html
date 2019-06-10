@@ -32,7 +32,10 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Person name</th>
       <td mat-cell *matCellDef="let user"> {{user.fullUserName}} </td>
     </ng-container>
-
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Stanowisko</th>
+      <td mat-cell *matCellDef="let user"> {{user.position}} </td>
+    </ng-container>
     <ng-container matColumnDef="team">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Team</th>
       <td mat-cell *matCellDef="let user"> {{user.team}} </td>
