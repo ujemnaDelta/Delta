@@ -25,7 +25,7 @@ namespace PortalApp.API.Controllers
             _adminRepo = adminRepo;
         }
 
-        [Authorize(Policy = "RequireAdmin")]
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpGet("userswithroles")]
         public async Task<IActionResult> GetUsersWithRoles()
         {
@@ -49,7 +49,7 @@ namespace PortalApp.API.Controllers
                                   }).ToListAsync();
             return Ok(userList);
         }
-        [Authorize(Policy = "RequireAdmin")]
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpPost("editRoles/{UserName}")]
         public async Task<IActionResult> EditRoles(string UserName, RoleEditDto roleEditDto)
         {
@@ -89,15 +89,15 @@ namespace PortalApp.API.Controllers
             }
         }
 
-        [Authorize(Policy = "RequireAdmin")]
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpGet("teams")]
         public async Task<IActionResult> Teams()
         {
             var teams = await _adminRepo.AllTeams();
             return Ok(teams);
         }
-
-        [Authorize(Policy = "RequireAdmin")]
+        
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpGet("roles")]
         public async Task<IActionResult> GetRoles()
         {

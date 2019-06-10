@@ -79,6 +79,7 @@ namespace PortalApp.API
                 options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
                 options.AddPolicy("RequireHR", policy => policy.RequireRole("HR"));
                 options.AddPolicy("RequireLeader", policy => policy.RequireRole("Leader"));
+                options.AddPolicy("RequireHrAdmin", policy => policy.RequireRole("HR","Admin"));
             });
             services.AddMvc(options =>{
                 var policy = new AuthorizationPolicyBuilder()

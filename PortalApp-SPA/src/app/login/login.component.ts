@@ -16,7 +16,8 @@ export class LoginComponent implements OnInit {
   model: any = {};
   myForm = this.fb.group({
     userName: ['', [Validators.required]],
-    userPassword: ['',  [Validators.required, Validators.minLength(8)]],
+    userPassword: ['',  [Validators.required,
+      Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')]]
 
 });
 

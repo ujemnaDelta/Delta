@@ -36,7 +36,7 @@ namespace PortalApp.API.Controllers
             _signInManager = signInManager;
             _context = context;
         }
-
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDTO userForRegister)
         {
@@ -45,7 +45,7 @@ namespace PortalApp.API.Controllers
 
             if (await repositoryGlobalField.IfUserExists(userForRegister.UserName))
             {
-                return BadRequest("Login is already exists");
+                return BadRequest("Taki login już istnieje");
             }
             
             var result = await repositoryGlobalField.RegisterUser(userForRegister);
@@ -62,7 +62,7 @@ namespace PortalApp.API.Controllers
             
             
         }
-
+        
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDTO userForLogin)
         {
