@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -21,6 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using PortalApp.API.Data;
 using PortalApp.API.Helpers;
@@ -41,7 +43,10 @@ namespace PortalApp.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            culture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
 
+            services.AddCors();
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             IdentityBuilder builder = services.AddIdentityCore<UserModel>(opt =>{
                 opt.Password.RequireDigit = false;
@@ -65,24 +70,26 @@ namespace PortalApp.API
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
                             .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
                         ValidateIssuer = false,
-                        ValidateAudience = false
+                        ValidateAudience = false,
+                        
                     };
                 });
 
             services.AddAuthorization(options =>{
-                options.AddPolicy("AdminRole", policy => policy.RequireRole("Admin"));
-                options.AddPolicy("HRRole", policy => policy.RequireRole("HR","Admin"));
-                options.AddPolicy("LeaderRole", policy => policy.RequireRole("Leader", "Admin"));
+                options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("RequireHR", policy => policy.RequireRole("HR"));
+                options.AddPolicy("RequireLeader", policy => policy.RequireRole("Leader"));
             });
             services.AddMvc(options =>{
-
                 var policy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddCors();
+            
             services.AddScoped<IAuthorizationRepository, AuthorizationRepository>();
+            services.AddScoped<IAdminPanelRepository, AdminRepository>();
+            services.AddScoped<ILeaderRepository, LeaderRepository>();
             services.AddTransient<Seed>();
         }
 
@@ -92,6 +99,7 @@ namespace PortalApp.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                IdentityModelEventSource.ShowPII = true;
             }
             else
             {
@@ -109,9 +117,10 @@ namespace PortalApp.API
             }
             //app.UseHttpsRedirection();
             seeder.SeedUsers();
-            app.UseCors( x => x.AllowAnyOrigin().AllowAnyHeader());
+            
+            app.UseCors( x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            
             app.UseAuthentication();
-        
             app.UseMvc();
             //Debug.Log(Configuration.GetSection("AppSettings:Token").Value);
         }

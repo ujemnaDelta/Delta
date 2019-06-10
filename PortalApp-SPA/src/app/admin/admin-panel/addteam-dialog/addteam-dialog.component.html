@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+      <span>Dodaj dietetyka</span>
+      <span class="example-spacer"></span>
+      <button mat-mini-fab color="warn" (click) ="onClose()"><mat-icon>close</mat-icon></button>
+
+    </mat-toolbar-row>
+  </mat-toolbar>
+      <form [formGroup]="myForm" (submit)="Add(myForm)"class="text-center border border-light flex p-4 w-100 cloudy-knoxville-gradient" >
+          <div class="inputs">
+              <mat-form-field>
+              <input matInput placeholder="TeamName" name="TeamName" type="text" formControlName="TeamName">
+              <mat-icon matSuffix class="mat-primary">person</mat-icon>
+              <mat-error>Zespoł jest <strong>wymagany</strong></mat-error>
+            </mat-form-field>
+          </div>
+            <div class="main-buttons">
+              <button mat-raised-button class="text-white w-25 mat-primary" [disabled]="!myForm.valid"  id="submitButton" type="submit"><mat-icon class="mr-1">person_add</mat-icon>Submit</button>
+            </div>
+
+  </form>

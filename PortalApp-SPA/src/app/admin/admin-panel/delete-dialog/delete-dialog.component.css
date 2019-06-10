@@ -1,0 +1,23 @@
+.title-center {
+  flex: 1 1 auto;
+  text-align: center;
+}
+button:focus {
+  outline: 0 !important;
+}
+.inputs {
+  justify-content: space-between;
+  flex-direction: column;
+  padding-top: 5px;
+  display: flex;
+  align-items: stretch;
+}
+.main-buttons {
+  margin-top:40px;
+  justify-content: flex-end;
+  display: flex;
+  height: 45px;
+}
+#submitButton {
+  margin-left: 20px;
+}

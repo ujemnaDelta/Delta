@@ -1,0 +1,27 @@
+.example-container {
+  height: 420px;
+  width: 1140px;
+  overflow: auto;
+}
+button:focus {
+  outline: 0 !important;
+}
+.iconsButton:focus {
+
+  border: 0 !important;
+  box-shadow: none !important;
+}
+table {
+  width: 100%;
+}
+th.mat-sort-header-sorted {
+  color: black;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100vh;
+}
+
+td, th {
+  width: 17%;
+}

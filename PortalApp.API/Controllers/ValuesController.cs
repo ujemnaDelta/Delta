@@ -24,7 +24,7 @@ namespace PortalApp.API.Controllers
         }
         // GET api/values
         [AllowAnonymous]
-        [HttpGet]
+        [HttpGet("values")]
         public async Task<IActionResult> GetValuesAsync()
         {
             List<Models.ValueModel> values = await contextGlobalField.Values.ToListAsync();    // to list, więc widać w teorii mógłby to być var ale tak jest czytelniej(przynajmniej dla mnie. Tymon)
