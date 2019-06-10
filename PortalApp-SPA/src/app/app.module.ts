@@ -25,8 +25,6 @@ import { MainComponent } from './main/main.component';
 import { TeamComponent } from './team/team.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
-import { HrPanelComponent } from './hr/hr-panel/hr-panel.component';
-import { LeaderPanelComponent } from './leader/leader-panel/leader-panel.component';
 
 
 
@@ -39,8 +37,6 @@ import { LeaderPanelComponent } from './leader/leader-panel/leader-panel.compone
       MainComponent,
       TeamComponent,
       AdminPanelComponent,
-      HrPanelComponent,
-      LeaderPanelComponent
    ],
    imports: [
       BrowserModule,

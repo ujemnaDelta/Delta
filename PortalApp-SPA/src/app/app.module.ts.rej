@@ -1,0 +1,10 @@
+diff a/PortalApp-SPA/src/app/app.module.ts b/PortalApp-SPA/src/app/app.module.ts	(rejected hunks)
+@@ -25,6 +25,8 @@
+ import { TeamComponent } from './team/team.component';
+ import { AuthGuard } from './guards/auth.guard';
+ import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
++import { HrPanelComponent } from './hr/hr-panel/hr-panel.component';
++import { LeaderPanelComponent } from './leader/leader-panel/leader-panel.component';
+ 
+ 
+ 
