@@ -12,7 +12,13 @@
         </mdb-navbar-brand>
         <ul class="navbar-nav mr-auto">
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
-              <a class="nav-link waves-light text-primary" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
+              <a *appHasRole="['Admin']" class="nav-link waves-light text-primary" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
+                <span class="sr-only">(current)</span>
+              </a>
+              <a *appHasRole="['HR']" class="nav-link waves-light text-primary" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
+                <span class="sr-only">(current)</span>
+              </a>
+              <a *appHasRole="['Member']" class="nav-link waves-light text-primary" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>

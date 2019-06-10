@@ -1,3 +1,23 @@
-<p>
-  team works!
-</p>
+<div class="main">
+    <mat-tab-group class="mat-accent p-3 heavy-rain-gradient" mat-align-tabs="center"  >
+          <mat-tab>
+              <ng-template mat-tab-label >
+                  <mat-icon class="text-primary mr-1">note</mat-icon>
+                Oceny
+              </ng-template>
+
+                  <mat-card class="example-large-box mat-elevation-z7 cloudy-knoxville-gradient ">
+                <ng-container *ngFor="let opinion of teamMates" >
+                  <div class="example-ripple-container mat-elevation-z7 text-center align-content-center" matRipple matRippleColor="rgb(155, 212, 255)" >
+                      <mat-icon class="example-tab-icon text-primary">comment</mat-icon>
+                      <strong><p class="ex d-block text-left ml-3 ">Imię i nazwisko: <strong class="text-primary">{{opinion.name}} </strong></p></strong>
+                      <strong><p class="ex2 d-block text-left ml-3 ">Stanowisko:<strong class="text-primary"> {{opinion.position}} </strong> </p></strong>
+
+              </div>
+                </ng-container>
+                </mat-card>
+            </mat-tab>
+    </mat-tab-group>
+
+
+  </div>
