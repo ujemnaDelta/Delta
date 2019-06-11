@@ -20,13 +20,12 @@ export class ShowopinionsDialogComponent implements OnInit {
   opinions: ShowOpinion[];
   leader: any;
   constructor(private serviceLeader: LeaderService, private alertify: AlertifyService, @Inject(MAT_DIALOG_DATA) public userOpinion: Opinion,
-  private fb: FormBuilder, public dialogRef: MatDialogRef<ShowopinionsDialogComponent>) { }
+  private fb: FormBuilder, public dialogRef: MatDialogRef<ShowopinionsDialogComponent>) {
+   }
 
   ngOnInit() {
-    this.getAll();
     this.getLeaderName();
-
-     console.log(this.opinions);
+    this.getAll();
   }
 
   onClose() {
@@ -35,6 +34,7 @@ export class ShowopinionsDialogComponent implements OnInit {
   getLeaderName() {
     this.serviceLeader.GetLeader(this.userOpinion.leaderId).subscribe((user: any) => {
       this.leader = user;
+
     }, error => {
       console.log(error);
     });
@@ -42,7 +42,6 @@ export class ShowopinionsDialogComponent implements OnInit {
   getAll() {
     this.serviceLeader.GetUserOpinion(this.userOpinion.evaluatedId).subscribe((user: ShowOpinion[]) => {
       this.opinions = user;
-      console.log(this.opinions);
       this.alertify.success('Pomyślnie wczytano opinię');
     }, error => {
       console.log(error);

@@ -75,7 +75,7 @@
             <input matInput placeholder="Podaj swoje hasło" name="userPassword" type="password" formControlName="userPassword">
             <mat-icon matSuffix class="mat-primary">lock</mat-icon>
             <mat-error *ngIf="!myForm.controls.userPassword.hasError('required')">
-                Hasło musi być<strong>silne</strong>
+                Hasło musi być <strong>silne</strong>
               </mat-error>
               <mat-error *ngIf="!myForm.controls.userPassword.hasError('pattern')">
                 Hasło jest <strong>wymagane</strong>

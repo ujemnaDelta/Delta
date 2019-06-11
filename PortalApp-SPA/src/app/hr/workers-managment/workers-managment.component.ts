@@ -4,6 +4,8 @@ import { MatDialogConfig, MatTableDataSource, MatPaginator, MatSort, MatDialog }
 import { User } from 'src/app/models/User';
 import { AdminService } from 'src/app/services/admin.service';
 import { AlertifyService } from 'src/app/services/alertify.service';
+import { TeamLeaderPanel } from 'src/app/models/TeamLeaderPanel';
+import { ShowopinionsDialogComponent } from 'src/app/leader/dialogs/showopinions-dialog/showopinions-dialog.component';
 
 @Component({
   selector: 'app-workers-managment',
@@ -14,13 +16,8 @@ export class WorkersManagmentComponent implements OnInit {
   displayedColumns: string[] = ['id', 'UserName', 'fullUserName', 'position', 'roles', 'team'];
   users: MatTableDataSource<User>;
   searchKey: string;
+  leader: any;
   constructor(private adminService: AdminService, private dialog: MatDialog, private alertify: AlertifyService) {
-    dialog.afterAllClosed
-    .subscribe(() => {
-    // update a variable or call a function when the dialog closes
-      this.getAll();
-    }
-  );
 }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -29,12 +26,18 @@ export class WorkersManagmentComponent implements OnInit {
   ngOnInit() {
    this.getAll();
   }
+  getLeaderId(team: string) {
+    this.adminService.GetLeaderId(team).subscribe( user => {
+      this.leader = user;
+    }, error => {
+      console.log(error);
+    });
+  }
   getAll() {
     this.adminService.getUsersWithRoles().subscribe((user: User[]) => {
       this.users = new MatTableDataSource(user);
       this.users.paginator = this.paginator;
     this.users.sort = this.sort;
-    console.log(user);
     }, error => {
       console.log(error);
     });
@@ -59,5 +62,15 @@ onCreateDialog() {
   this.dialog.open(AddPersonDialogComponent, dialogConfig);
 }
 
+OpenOpinions(user: any) {
+  const dialogConfig2 = new MatDialogConfig();
+  dialogConfig2.disableClose = false;
+  dialogConfig2.autoFocus = true;
+  dialogConfig2.width = '80%';
+  dialogConfig2.height = '80%';
+  dialogConfig2.data = { evaluatedId: user.id, leaderId: user.leaderId, name: user.name};
+  this.dialog.open(ShowopinionsDialogComponent, dialogConfig2);
+
+}
 
 }

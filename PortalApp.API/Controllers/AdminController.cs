@@ -41,6 +41,8 @@ namespace PortalApp.API.Controllers
                                       Position = user.Position,
                                       Team = _context.UserTeam.Include(p => p.Team)
                                         .Where(p => p.UserId == user.Id).Select(p => p.Team.NameOfTeam),
+                                    LeaderId = _context.UserTeam.Include(p => p.Team)
+                                        .Where(p => p.UserId == user.Id).Select(p => p.Team.LeaderId).FirstOrDefault(),
                                       Roles = (from userRole in user.UserRoles
                                                join role in _context.Roles
                                                on userRole.RoleId
@@ -106,7 +108,7 @@ namespace PortalApp.API.Controllers
             return Ok(roles);
         }
 
-        [Authorize(Policy = "RequireAdmin")]
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpGet("teamsmanagment")]
         public async Task<IActionResult> GetTeamsWithLeaders() {
 
@@ -207,6 +209,18 @@ namespace PortalApp.API.Controllers
              await _context.SaveChangesAsync();
              var b = await _context.Team.ToListAsync();
             return StatusCode(201);
+        }
+
+        [Authorize(Policy = "RequireHrAdmin")]
+        [HttpGet("leader/{name}")]
+        public async Task<IActionResult> GetLeader(string name)
+        {
+            if(name == null || name.Trim() == "") {
+                return BadRequest("Brak nazwy teamu");
+            }
+            var result = await _context.Team.FirstOrDefaultAsync( x=> x.NameOfTeam == name);
+            
+            return Ok(result);
         }
     }
 }

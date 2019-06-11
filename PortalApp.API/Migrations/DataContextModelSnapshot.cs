@@ -89,7 +89,7 @@ namespace PortalApp.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Created");
+                    b.Property<string>("Created");
 
                     b.Property<string>("leaderText");
 

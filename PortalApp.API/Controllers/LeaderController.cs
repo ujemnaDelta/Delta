@@ -26,7 +26,7 @@ namespace PortalApp.API.Controllers
             _leaderRepo = leaderRepo;
         }
 
-        [Authorize(Policy = "RequireLeader")]
+        [Authorize(Policy = "RequireHrLeader")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLeaderName(int id)
         {
@@ -90,7 +90,7 @@ namespace PortalApp.API.Controllers
 
             return Ok(201);
         }
-        [Authorize(Policy = "RequireLeader")]
+        [Authorize(Policy = "RequireHrLeader")]
         [HttpGet("useropinions/{id}")]
         public async Task<IActionResult> GetOpinions(int id)
         {

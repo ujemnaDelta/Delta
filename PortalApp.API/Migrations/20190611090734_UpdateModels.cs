@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PortalApp.API.Migrations
 {
-    public partial class UpdateModelsTeam : Migration
+    public partial class UpdateModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,7 +58,7 @@ namespace PortalApp.API.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     mainText = table.Column<string>(nullable: true),
                     leaderText = table.Column<string>(nullable: true),
-                    Created = table.Column<DateTime>(nullable: false)
+                    Created = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

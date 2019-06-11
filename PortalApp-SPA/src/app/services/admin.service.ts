@@ -33,7 +33,9 @@ constructor(private http: HttpClient) { }
   getTeam() {
     return this.http.get(this.baseUrl + 'admin/teams');
   }
-
+  GetLeaderId(name: string) {
+    return this.http.get(this.baseUrl + 'admin/leader/' + name);
+  }
   getAllTeamManagment() {
     return this.http.get(this.baseUrl + 'admin/teamsmanagment');
   }

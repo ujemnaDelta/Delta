@@ -25,10 +25,12 @@
     <mat-form-field appearance="outline"class="mt-1" >
       <textarea style="height: 150px; color:black" matInput name="mainText" type="text" [disabled]='true' placeholder="Opinia"> {{opinion.mainText}}</textarea>
     </mat-form-field>
-    <span><strong>Notatka: </strong></span>
-    <mat-form-field appearance="outline" class="mt-1">
+
+    <span *appHasRole="['Leader']"><strong>Notatka: </strong></span>
+    <mat-form-field appearance="outline" class="mt-1" *appHasRole="['Leader']">
         <textarea  style="height: 150px; color:black" matInput name="mainText" type="text" [disabled]='true' placeholder="Notatka"> {{opinion.leaderText}}</textarea>
       </mat-form-field>
+
   </div>
   </mat-expansion-panel>
 </mat-accordion>

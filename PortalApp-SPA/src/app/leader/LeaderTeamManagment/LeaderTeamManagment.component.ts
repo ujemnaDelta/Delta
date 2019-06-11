@@ -59,18 +59,16 @@ export class LeaderTeamManagmentComponent implements OnInit {
 }
 
 OpenOpinions(user: TeamLeaderPanel) {
-  console.log(user);
   const dialogConfig2 = new MatDialogConfig();
   dialogConfig2.disableClose = false;
   dialogConfig2.autoFocus = true;
   dialogConfig2.width = '80%';
   dialogConfig2.height = '80%';
-
   dialogConfig2.data = { evaluatedId: user.id, leaderId: this.LeaderId, name: user.name};
   this.dialog.open(ShowopinionsDialogComponent, dialogConfig2);
 }
 
-AddOpinionDialog(user: TeamLeaderPanel) {
+AddOpinionDialog(user: any) {
   const dialogConfig2 = new MatDialogConfig();
   dialogConfig2.disableClose = false;
   dialogConfig2.autoFocus = true;
