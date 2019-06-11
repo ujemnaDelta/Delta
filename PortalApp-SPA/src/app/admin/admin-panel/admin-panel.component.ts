@@ -11,7 +11,6 @@ export class AdminPanelComponent implements OnInit {
   constructor(private alertify: AlertifyService) { }
 
   ngOnInit() {
-    this.alertify.success('Loading data in successfully');
   }
 
 }

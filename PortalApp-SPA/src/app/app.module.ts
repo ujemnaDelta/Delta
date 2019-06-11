@@ -13,6 +13,7 @@ import {
    MatNativeDateModule, MatOptionModule, MatSelectModule,
 
 } from '@angular/material';
+import {MatRippleModule} from '@angular/material/core';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -45,6 +46,10 @@ import { LeaderTeamManagmentComponent } from './leader/LeaderTeamManagment/Leade
 import { AddOpinionDialogComponent } from './leader/dialogs/AddOpinionDialog/AddOpinionDialog.component';
 import { ShowopinionsDialogComponent } from './leader/dialogs/showopinions-dialog/showopinions-dialog.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MemberService } from './services/member.service';
+import { OpinionDialogComponent } from './main/opinion-dialog/opinion-dialog.component';
+import { WorkersManagmentComponent } from './hr/workers-managment/workers-managment.component';
+import { ContactDialogComponent } from './login/contact-dialog/contact-dialog.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -71,7 +76,10 @@ export function tokenGetter() {
       DeleteteamDialogComponent,
       LeaderTeamManagmentComponent,
       AddOpinionDialogComponent,
-      ShowopinionsDialogComponent
+      ShowopinionsDialogComponent,
+      OpinionDialogComponent,
+      WorkersManagmentComponent,
+      ContactDialogComponent
 
    ],
    imports: [
@@ -83,6 +91,7 @@ export function tokenGetter() {
       MatTabsModule,
       MatRadioModule,
       MatButtonModule,
+      MatRippleModule,
       MatOptionModule,
       MatSelectModule,
       MatCardModule,
@@ -120,7 +129,8 @@ export function tokenGetter() {
       AlertifyService,
       AuthGuard,
       AdminService,
-      LeaderService
+      LeaderService,
+      MemberService
    ],
    bootstrap: [
       AppComponent
@@ -128,6 +138,7 @@ export function tokenGetter() {
    entryComponents: [AddPersonDialogComponent, DeleteDialogComponent,
     AddusertoteamDialogComponent, AddteamDialogComponent,
     DeleteteamDialogComponent, AddOpinionDialogComponent,
-    ShowopinionsDialogComponent]
+    ShowopinionsDialogComponent, OpinionDialogComponent,
+    ContactDialogComponent]
 })
 export class AppModule { }

@@ -25,12 +25,10 @@ namespace PortalApp.API.Controllers
             _adminRepo = adminRepo;
         }
 
-        [Authorize(Policy = "RequireAdmin")]
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpGet("userswithroles")]
         public async Task<IActionResult> GetUsersWithRoles()
         {
-            var asd = await _context.Users.FirstOrDefaultAsync();
-
             var userList = await (from user in _context.Users
                                   orderby user.Id
                                   select new
@@ -41,6 +39,8 @@ namespace PortalApp.API.Controllers
                                       Position = user.Position,
                                       Team = _context.UserTeam.Include(p => p.Team)
                                         .Where(p => p.UserId == user.Id).Select(p => p.Team.NameOfTeam),
+                                    LeaderId = _context.UserTeam.Include(p => p.Team)
+                                        .Where(p => p.UserId == user.Id).Select(p => p.Team.LeaderId).FirstOrDefault(),
                                       Roles = (from userRole in user.UserRoles
                                                join role in _context.Roles
                                                on userRole.RoleId
@@ -49,7 +49,7 @@ namespace PortalApp.API.Controllers
                                   }).ToListAsync();
             return Ok(userList);
         }
-        [Authorize(Policy = "RequireAdmin")]
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpPost("editRoles/{UserName}")]
         public async Task<IActionResult> EditRoles(string UserName, RoleEditDto roleEditDto)
         {
@@ -89,15 +89,15 @@ namespace PortalApp.API.Controllers
             }
         }
 
-        [Authorize(Policy = "RequireAdmin")]
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpGet("teams")]
         public async Task<IActionResult> Teams()
         {
             var teams = await _adminRepo.AllTeams();
             return Ok(teams);
         }
-
-        [Authorize(Policy = "RequireAdmin")]
+        
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpGet("roles")]
         public async Task<IActionResult> GetRoles()
         {
@@ -106,7 +106,7 @@ namespace PortalApp.API.Controllers
             return Ok(roles);
         }
 
-        [Authorize(Policy = "RequireAdmin")]
+        [Authorize(Policy = "RequireHrAdmin")]
         [HttpGet("teamsmanagment")]
         public async Task<IActionResult> GetTeamsWithLeaders() {
 
@@ -128,15 +128,15 @@ namespace PortalApp.API.Controllers
         [HttpPost("userteam")]
         public async Task<IActionResult> AddUserToTeam(UserForTeamDto userTeamDto)
         {
-            var user = _context.Users.FirstOrDefault(x => x.UserName == userTeamDto.UserLogin);
-            var team = _context.Team.FirstOrDefault(x => x.NameOfTeam == userTeamDto.UserTeam);
+            var user = await _adminRepo.GetUserAsync(userTeamDto);
+            var team = await _adminRepo.GetTeamAsync(userTeamDto);
 
             if(user == null || team == null) {
 
              return BadRequest("Nie ma takiego użytkownika lub zespołu");
 
             }
-            if(await _context.UserTeam.AnyAsync(x=> x.UserId == user.Id)){
+            if(await _adminRepo.CheckTeamUser(user)){
                 return BadRequest("Ten użytkownik już ma swój team. Zmień jego team na panelu użytkownika");
             }
             UserTeam userTeam = new UserTeam() {
@@ -144,7 +144,7 @@ namespace PortalApp.API.Controllers
                 UserId = user.Id
             };
 
-            await _context.UserTeam.AddAsync(userTeam);
+             _adminRepo.AddUserTeam(userTeam);
             return StatusCode(201);
         }
 
@@ -203,10 +203,22 @@ namespace PortalApp.API.Controllers
               
             };
 
-             var result = await _context.Team.AddAsync(Team);
+              _adminRepo.AddTeam(Team);
              await _context.SaveChangesAsync();
-             var b = await _context.Team.ToListAsync();
+            
             return StatusCode(201);
+        }
+
+        [Authorize(Policy = "RequireHrAdmin")]
+        [HttpGet("leader/{name}")]
+        public async Task<IActionResult> GetLeader(string name)
+        {
+            if(name == null || name.Trim() == "") {
+                return BadRequest("Brak nazwy teamu");
+            }
+            var result = await _context.Team.FirstOrDefaultAsync( x=> x.NameOfTeam == name);
+            
+            return Ok(result);
         }
     }
 }

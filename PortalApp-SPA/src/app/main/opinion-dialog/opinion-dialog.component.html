@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Opinia pracownika: {{userOpinion.name}}</span>
+    <span class="example-spacer"></span>
+    <button mat-mini-fab color="warn" (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>
+<form [formGroup]="myForm" class="border border-light flex p-4 w-100 heavy-rain-gradient">
+  <div class="inputs">
+
+    <mat-form-field>
+      <input matInput name="Stanowisko" placeholder="Stanowisko" type="text" formControlName="position" class="text-primary">
+      <mat-icon matSuffix class="mat-primary">work</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Stworzone" name="Data" type="text" formControlName="created" class="text-primary">
+      <mat-icon matSuffix class="mat-primary">date_range</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput placeholder="Wystawione przez: " name="leader" type="text" formControlName="leaderName" class="text-primary">
+        <mat-icon matSuffix class="mat-primary">person</mat-icon>
+      </mat-form-field>
+
+    <strong><span><strong>Opinia: </strong></span></strong>
+    <mat-form-field appearance="fill" class="mt-1">
+      <textarea style="height: 150px" matInput name="mainText" type="text"
+        placeholder="Opinia" formControlName="mainText" class="text-dark"></textarea>
+        <mat-icon matPreffix class="mat-primary">short_text</mat-icon>
+    </mat-form-field>
+
+  </div>
+
+</form>

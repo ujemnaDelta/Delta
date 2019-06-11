@@ -9,8 +9,8 @@ using PortalApp.API.Data;
 namespace PortalApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190609165101_UpdateModelsTeam")]
-    partial class UpdateModelsTeam
+    [Migration("20190611090734_UpdateModels")]
+    partial class UpdateModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -91,7 +91,7 @@ namespace PortalApp.API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("Created");
+                    b.Property<string>("Created");
 
                     b.Property<string>("leaderText");
 

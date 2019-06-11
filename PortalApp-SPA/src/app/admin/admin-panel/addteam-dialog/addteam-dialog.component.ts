@@ -18,7 +18,7 @@ export class AddteamDialogComponent implements OnInit {
   }
 
   Add(form: FormControl) {
-    console.log(form.value);
+
     this.serviceAdmin.addTeam(form.value).subscribe(res => {
       this.onClose();
     }, error => {

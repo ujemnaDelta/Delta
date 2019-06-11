@@ -9,6 +9,7 @@ import { trigger, state, transition, style, animate } from '@angular/animations'
 import { AddusertoteamDialogComponent } from '../admin-panel/addusertoteam-dialog/addusertoteam-dialog.component';
 import { AddteamDialogComponent } from '../admin-panel/addteam-dialog/addteam-dialog.component';
 import { DeleteteamDialogComponent } from '../admin-panel/deleteteam-dialog/deleteteam-dialog.component';
+import { AlertifyService } from 'src/app/services/alertify.service';
 
 @Component({
   selector: 'app-team-managment',
@@ -20,7 +21,7 @@ export class TeamManagmentComponent implements OnInit {
   teams: MatTableDataSource<TeamManagment>;
   searchKey: string;
 
-  constructor(private adminService: AdminService, private dialog: MatDialog) {
+  constructor(private adminService: AdminService, private dialog: MatDialog, private alertify: AlertifyService) {
     dialog.afterAllClosed
     .subscribe(() => {
     // update a variable or call a function when the dialog closes
@@ -40,9 +41,8 @@ export class TeamManagmentComponent implements OnInit {
       this.teams = new MatTableDataSource(team);
       this.teams.paginator = this.paginator;
     this.teams.sort = this.sort;
-    console.log(team);
     }, error => {
-      console.log(error);
+      this.alertify.error(error);
     });
   }
   applyFilter(filterValue: string) {

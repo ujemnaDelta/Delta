@@ -38,9 +38,8 @@ export class UserManagmentComponent implements OnInit {
       this.users = new MatTableDataSource(user);
       this.users.paginator = this.paginator;
     this.users.sort = this.sort;
-    console.log(user);
     }, error => {
-      console.log(error);
+      this.alertify.error(error);
     });
   }
   applyFilter(filterValue: string) {

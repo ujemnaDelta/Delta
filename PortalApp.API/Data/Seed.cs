@@ -30,8 +30,8 @@ namespace PortalApp.API.Data
         {
             if(!_userManager.Users.Any())
             {
-                var userData = System.IO.File.ReadAllText("Data/SeedData.json");
-                var users = JsonConvert.DeserializeObject<List<UserModel>>(userData);
+                //var userData = System.IO.File.ReadAllText("Data/SeedData.json");
+                //var users = JsonConvert.DeserializeObject<List<UserModel>>(userData);
 
                 var roles = new List<Role>
                 {
@@ -53,22 +53,22 @@ namespace PortalApp.API.Data
                 foreach(var team in teams) {
                     _context.Team.AddAsync(team);
                 }
-                foreach (var user in users)
-                {
-                    _userManager.CreateAsync(user, "password").Wait();
-                    _userManager.AddToRoleAsync(user,"Member").Wait();
-                    var UserTeam = new UserTeam();
-                    UserTeam.User = user;
-                    UserTeam.Team = teams.FirstOrDefault(p => p.Id == 1);
-                    _context.UserTeam.Add(UserTeam);
-                }
+                // foreach (var user in users)
+                // {
+                //     _userManager.CreateAsync(user, "Password1111@").Wait();
+                //     _userManager.AddToRoleAsync(user,"Member").Wait();
+                //     var UserTeam = new UserTeam();
+                //     UserTeam.User = user;
+                //     UserTeam.Team = teams.FirstOrDefault(p => p.Id == 1);
+                //     _context.UserTeam.Add(UserTeam);
+                // }
                 var adminUser = new UserModel
                 {
                     UserName = "Admin"
                     
                 };
                 
-                IdentityResult result = _userManager.CreateAsync(adminUser, "password").Result;
+                IdentityResult result = _userManager.CreateAsync(adminUser, "Password1111@").Result;
                
                 if(result.Succeeded)
                 {

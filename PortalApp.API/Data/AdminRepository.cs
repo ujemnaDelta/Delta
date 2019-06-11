@@ -18,6 +18,17 @@ namespace PortalApp.API.Data
             _userManager = userManager;
         }
 
+        public async void AddTeam(Team team)
+        {
+            await _context.Team.AddAsync(team);
+        }
+
+        public async void AddUserTeam(UserTeam team)
+        {
+             await _context.UserTeam.AddAsync(team);
+           
+        }
+
         public async Task<List<string>> AllRoles()
         {
             var roles = await _context.Roles
@@ -34,6 +45,17 @@ namespace PortalApp.API.Data
         public Task<object> AllUsersWithRoles()
         {
             throw new System.NotImplementedException();
+        }
+
+        public async Task<bool> CheckTeamUser(UserModel user)
+        {
+            var result = await _context.UserTeam.AnyAsync(x=> x.UserId == user.Id);
+            if(result == false) {
+                return false;
+            }
+            else {
+                return true;
+            }
         }
 
         public async Task<IdentityResult> DeleteFromRoles(string UserName, RoleEditDto roleEditDto)
@@ -72,6 +94,20 @@ namespace PortalApp.API.Data
             selectedRoles = selectedRoles ?? new string[] { };
             var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
             return result;
+        }
+
+        public async Task<Team> GetTeamAsync(UserForTeamDto userTeamDto)
+        {
+            var team = await _context.Team.FirstOrDefaultAsync(x => x.NameOfTeam == userTeamDto.UserTeam);
+
+            return team;
+        }
+
+        public async Task<UserModel> GetUserAsync(UserForTeamDto userTeamDto)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName == userTeamDto.UserLogin);
+
+            return user;
         }
 
         public async Task<IList<string>> GetUserRoles(string UserName)

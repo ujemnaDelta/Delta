@@ -25,3 +25,11 @@ th.mat-sort-header-sorted {
 td, th {
   width: 17%;
 }
+tr.all-row:not(.header-row):hover {
+  background: rgb(220, 238, 252);
+  cursor: pointer;
+}
+
+tr.all-row:not(.header-row):active {
+  background: rgb(154, 186, 212);
+}

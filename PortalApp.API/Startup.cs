@@ -43,8 +43,7 @@ namespace PortalApp.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            CultureInfo culture = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-            culture.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+            
 
             services.AddCors();
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
@@ -79,6 +78,9 @@ namespace PortalApp.API
                 options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
                 options.AddPolicy("RequireHR", policy => policy.RequireRole("HR"));
                 options.AddPolicy("RequireLeader", policy => policy.RequireRole("Leader"));
+                options.AddPolicy("RequireHrAdmin", policy => policy.RequireRole("HR","Admin"));
+                options.AddPolicy("RequireHrLeader", policy => policy.RequireRole("HR","Leader"));
+                options.AddPolicy("RequireAll", policy => policy.RequireRole("HR","Leader","Admin","Member"));
             });
             services.AddMvc(options =>{
                 var policy = new AuthorizationPolicyBuilder()

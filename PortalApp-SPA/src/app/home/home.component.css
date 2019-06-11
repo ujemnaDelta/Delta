@@ -1,0 +1,13 @@
+.image{
+
+  height:1200px;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: fixed;
+  width:1200px;
+  background-image:url('..//home//images//logokrd-min.jpg');
+  background-position: center;
+}
+
+
+
