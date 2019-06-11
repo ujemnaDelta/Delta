@@ -7,6 +7,7 @@ import { TeamLeaderPanel } from 'src/app/models/TeamLeaderPanel';
 import { AddOpinionDialogComponent } from '../dialogs/AddOpinionDialog/AddOpinionDialog.component';
 import { FormControl } from '@angular/forms';
 import { ShowopinionsDialogComponent } from '../dialogs/showopinions-dialog/showopinions-dialog.component';
+import { AlertifyService } from 'src/app/services/alertify.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -20,14 +21,8 @@ export class LeaderTeamManagmentComponent implements OnInit {
   teamMates: MatTableDataSource<TeamLeaderPanel>;
   searchKey: string;
   LeaderId: number;
-  constructor(private leaderService: LeaderService, private dialog: MatDialog, private authService: AuthService) {
-    dialog.afterAllClosed
-    .subscribe(() => {
-    // update a variable or call a function when the dialog closes
-      this.getAll();
-    }
-  );
-  }
+  constructor(private leaderService: LeaderService, private dialog: MatDialog, private authService: AuthService,
+    private alertify: AlertifyService) {}
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -43,7 +38,7 @@ export class LeaderTeamManagmentComponent implements OnInit {
        this.teamMates.paginator = this.paginator;
      this.teamMates.sort = this.sort;
     }, error => {
-      console.log(error);
+      this.alertify.error(error);
     });
   }
   applyFilter(filterValue: string) {

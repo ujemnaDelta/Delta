@@ -49,6 +49,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { MemberService } from './services/member.service';
 import { OpinionDialogComponent } from './main/opinion-dialog/opinion-dialog.component';
 import { WorkersManagmentComponent } from './hr/workers-managment/workers-managment.component';
+import { ContactDialogComponent } from './login/contact-dialog/contact-dialog.component';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -77,7 +78,8 @@ export function tokenGetter() {
       AddOpinionDialogComponent,
       ShowopinionsDialogComponent,
       OpinionDialogComponent,
-      WorkersManagmentComponent
+      WorkersManagmentComponent,
+      ContactDialogComponent
 
    ],
    imports: [
@@ -136,6 +138,7 @@ export function tokenGetter() {
    entryComponents: [AddPersonDialogComponent, DeleteDialogComponent,
     AddusertoteamDialogComponent, AddteamDialogComponent,
     DeleteteamDialogComponent, AddOpinionDialogComponent,
-    ShowopinionsDialogComponent, OpinionDialogComponent]
+    ShowopinionsDialogComponent, OpinionDialogComponent,
+    ContactDialogComponent]
 })
 export class AppModule { }

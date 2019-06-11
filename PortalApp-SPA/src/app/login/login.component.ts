@@ -5,6 +5,8 @@ import { AlertifyService } from '../services/alertify.service';
 import { Router } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
 import {FormControl, Validators, FormBuilder} from '@angular/forms';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { ContactDialogComponent } from './contact-dialog/contact-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +24,7 @@ export class LoginComponent implements OnInit {
 });
 
   constructor(private router: Router, public authService: AuthService, private alertify: AlertifyService, public guard: AuthGuard,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder, private dialog: MatDialog) { }
 
   ngOnInit() {
   }
@@ -45,5 +47,13 @@ export class LoginComponent implements OnInit {
     this.alertify.message('logged out');
     this.router.navigate(['/login']);
 }
+  OpenContactDialog() {
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = false;
+      dialogConfig.autoFocus = true;
+      dialogConfig.width = '30%';
+      dialogConfig.height = '30%';
+      this.dialog.open(ContactDialogComponent, dialogConfig);
+    }
+  }
 
-}

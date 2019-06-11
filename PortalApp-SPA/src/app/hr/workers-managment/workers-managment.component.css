@@ -7,7 +7,7 @@ button:focus {
   outline: 0 !important;
 }
 .iconsButton:focus {
-
+  outline: 0 !important;
   border: 0 !important;
   box-shadow: none !important;
 }

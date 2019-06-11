@@ -8,8 +8,13 @@ namespace PortalApp.API.Models
     {
         [Key]
         public int Id { get; set; }
+
+        [Required]
         public string mainText { get; set; }
+        
         public string leaderText { get; set; }  
+
+        [Required]
         public string Created { get; set; }
 
         

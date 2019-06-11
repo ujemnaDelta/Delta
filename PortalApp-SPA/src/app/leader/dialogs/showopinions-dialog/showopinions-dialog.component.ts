@@ -36,15 +36,14 @@ export class ShowopinionsDialogComponent implements OnInit {
       this.leader = user;
 
     }, error => {
-      console.log(error);
+      this.alertify.error(error);
     });
   }
   getAll() {
     this.serviceLeader.GetUserOpinion(this.userOpinion.evaluatedId).subscribe((user: ShowOpinion[]) => {
       this.opinions = user;
-      this.alertify.success('Pomyślnie wczytano opinię');
     }, error => {
-      console.log(error);
+      this.alertify.error(error);
     });
   }
 }

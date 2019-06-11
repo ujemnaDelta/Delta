@@ -24,21 +24,12 @@ export class MainComponent implements OnInit {
     this.getAll();
   }
 
-  // getLeaderName() {
-  //   this.serviceLeader.GetLeader(this.userOpinion.leaderId).subscribe((user: any) => {
-  //     this.leader = user;
-  //   }, error => {
-  //     console.log(error);
-  //   });
-  // }
   getAll() {
     this.UserId = this.authService.returnLeaderId();
     this.serviceUser.GetUserOpinion(this.UserId).subscribe((user: OpinionWithoutLeaderText[]) => {
       this.opinions = user;
-      console.log(this.opinions);
       this.alertify.success('Pomyślnie wczytano opinię');
     }, error => {
-      console.log(error);
     });
   }
 

@@ -16,8 +16,8 @@ export const appRoutes: Routes = [
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
-      {path: 'main', component: MainComponent},
-      {path: 'team', component: TeamComponent},
+      {path: 'main', component: MainComponent, data: {roles: ['Member']}},
+      {path: 'team', component: TeamComponent, data: {roles: ['Member']}},
       {path: 'adminPanel', component: AdminPanelComponent, data: {roles: ['Admin']}},
       {path: 'hrPanel', component: HrPanelComponent , data: { roles: ['HR'] }},
       {path: 'leaderPanel', component: LeaderPanelComponent , data: { roles: ['Leader'] }},

@@ -29,8 +29,6 @@ namespace PortalApp.API.Controllers
         [HttpGet("userswithroles")]
         public async Task<IActionResult> GetUsersWithRoles()
         {
-            var asd = await _context.Users.FirstOrDefaultAsync();
-
             var userList = await (from user in _context.Users
                                   orderby user.Id
                                   select new
@@ -130,15 +128,15 @@ namespace PortalApp.API.Controllers
         [HttpPost("userteam")]
         public async Task<IActionResult> AddUserToTeam(UserForTeamDto userTeamDto)
         {
-            var user = _context.Users.FirstOrDefault(x => x.UserName == userTeamDto.UserLogin);
-            var team = _context.Team.FirstOrDefault(x => x.NameOfTeam == userTeamDto.UserTeam);
+            var user = await _adminRepo.GetUserAsync(userTeamDto);
+            var team = await _adminRepo.GetTeamAsync(userTeamDto);
 
             if(user == null || team == null) {
 
              return BadRequest("Nie ma takiego użytkownika lub zespołu");
 
             }
-            if(await _context.UserTeam.AnyAsync(x=> x.UserId == user.Id)){
+            if(await _adminRepo.CheckTeamUser(user)){
                 return BadRequest("Ten użytkownik już ma swój team. Zmień jego team na panelu użytkownika");
             }
             UserTeam userTeam = new UserTeam() {
@@ -146,7 +144,7 @@ namespace PortalApp.API.Controllers
                 UserId = user.Id
             };
 
-            await _context.UserTeam.AddAsync(userTeam);
+             _adminRepo.AddUserTeam(userTeam);
             return StatusCode(201);
         }
 
@@ -205,9 +203,9 @@ namespace PortalApp.API.Controllers
               
             };
 
-             var result = await _context.Team.AddAsync(Team);
+              _adminRepo.AddTeam(Team);
              await _context.SaveChangesAsync();
-             var b = await _context.Team.ToListAsync();
+            
             return StatusCode(201);
         }
 

@@ -30,7 +30,7 @@ export class WorkersManagmentComponent implements OnInit {
     this.adminService.GetLeaderId(team).subscribe( user => {
       this.leader = user;
     }, error => {
-      console.log(error);
+      this.alertify.error(error);
     });
   }
   getAll() {
@@ -39,7 +39,7 @@ export class WorkersManagmentComponent implements OnInit {
       this.users.paginator = this.paginator;
     this.users.sort = this.sort;
     }, error => {
-      console.log(error);
+     this.alertify.error(error);
     });
   }
   applyFilter(filterValue: string) {
@@ -68,7 +68,7 @@ OpenOpinions(user: any) {
   dialogConfig2.autoFocus = true;
   dialogConfig2.width = '80%';
   dialogConfig2.height = '80%';
-  dialogConfig2.data = { evaluatedId: user.id, leaderId: user.leaderId, name: user.name};
+  dialogConfig2.data = { evaluatedId: user.id, leaderId: user.leaderId, name: user.fullUserName};
   this.dialog.open(ShowopinionsDialogComponent, dialogConfig2);
 
 }

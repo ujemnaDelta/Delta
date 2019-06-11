@@ -13,15 +13,12 @@
         <ul class="navbar-nav mr-auto">
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
 
-              <a *appHasRole="['HR']" class="nav-link waves-light text-primary" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
-                <span class="sr-only">(current)</span>
-              </a>
               <a *appHasRole="['Member']" class="nav-link waves-light text-primary" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
-              <a class="nav-link waves-light text-primary" style="color:black" mdbWavesEffect [routerLink]="['/team']" ><mdb-icon fas icon="users"></mdb-icon>Team</a>
+              <a *appHasRole="['Member']" class="nav-link waves-light text-primary" style="color:black" mdbWavesEffect [routerLink]="['/team']" ><mdb-icon fas icon="users"></mdb-icon>Team</a>
             </li>
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
                 <a *appHasRole="['Admin']" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/adminPanel']" ><mdb-icon fas icon="toolbox"></mdb-icon>Admin Panel</a>
@@ -87,7 +84,7 @@
     <!-- Register -->
     <div class = "my-4">
     <p>Nie masz konta?<br>
-        <a class="text-danger">Kontakt</a>
+        <a class="text-danger" (click)="OpenContactDialog()">Kontakt</a>
     </p>
   </div>
 </form>

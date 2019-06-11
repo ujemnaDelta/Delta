@@ -34,13 +34,9 @@ export class AddPersonDialogComponent implements OnInit {
   ngOnInit() {
     this.getTeams();
     this.getRoles();
-    console.log(this.model);
-    console.log(this.teams);
-    console.log(this.teams);
   }
 
   register(form: FormControl) {
-    console.log(form.value);
     this.authService.register(form.value).subscribe(() => {
       this.alertify.success('registration successful');
       this.onClose();
@@ -53,7 +49,7 @@ export class AddPersonDialogComponent implements OnInit {
     this.adminService.getTeam().subscribe(response => {
       this.teams = response;
     }, error => {
-      this.alertify.error('Failed load teams');
+      this.alertify.error(error);
     });
   }
 
@@ -61,7 +57,7 @@ export class AddPersonDialogComponent implements OnInit {
     this.adminService.getRoles().subscribe(response => {
       this.roles = response;
     }, error => {
-      this.alertify.error('Failed load roles');
+      this.alertify.error(error);
     });
   }
   onClose() {
