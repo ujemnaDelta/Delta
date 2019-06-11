@@ -1,6 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PortalApp.API.DataTransferObjects;
 using PortalApp.API.Models;
 
 namespace PortalApp.API.Data
@@ -15,15 +19,37 @@ namespace PortalApp.API.Data
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> AddOpinion(Opinion opinion)
+        public async Task<bool> AddOpinion(Opinion opinion, OpinionDto opinionDto)
         {
-            throw new System.NotImplementedException();
+            
+            var opinionAdded = await _context.AddAsync(opinion);
+            await _context.SaveChangesAsync();
+
+            UserOpinion UserOpinion = new UserOpinion()
+            {
+                Leader = await _context.Users.SingleOrDefaultAsync(x => x.Id == opinionDto.LeaderId),
+                User = await _context.Users.SingleOrDefaultAsync(x => x.Id == opinionDto.evaluatedId),
+                Opinions = await _context.Opinion.SingleOrDefaultAsync(x => x.Id == opinion.Id)
+
+            };
+            await _context.UserOpinion.AddAsync(UserOpinion);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
-        public async Task<IActionResult> AddUserOpinion(UserOpinion Useropinion)
+        public async Task<UserModel> LeaderNameAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var result = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            return result;
         }
 
+        public async Task<List<Opinion>> OpinionsAsync(int id)
+        {
+           var result = await _context.UserOpinion.Include(x => x.Opinions).Where(x => x.User.Id == id).Select(x => x.Opinions).ToListAsync();
+
+           return result;
+        }
     }
 }

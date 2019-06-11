@@ -6,42 +6,77 @@
 
   </mat-toolbar-row>
 </mat-toolbar>
-    <form #registerForm="ngForm" (ngSubmit)="register()" class="text-center border border-light flex p-4 w-100 cloudy-knoxville-gradient" >
+    <form [formGroup]="myForm" (ngSubmit)="register(myForm)" class="text-center border border-light flex p-4 w-100 cloudy-knoxville-gradient" >
         <div class="inputs">
           <mat-form-field>
-            <input matInput placeholder="FullName" name="FullName" type="text" [(ngModel)]="model.FullName">
+            <input matInput placeholder="Imię i nazwisko" name="FullName" type="text" formControlName="FullUserName">
             <mat-icon matSuffix class="mat-primary">person</mat-icon>
-            <mat-error>This field is mandatory.</mat-error>
+            <mat-error *ngIf="!myForm.controls.FullUserName.hasError('required')">
+                Imię i nazwisko <strong>za krótkie</strong>
+              </mat-error>
+              <ng-template #minlength>
+              <mat-error *ngIf="!myForm.controls.FullUserName.hasError('minlength')">
+                Imię i nazwisko jest <strong>wymagane</strong>
+              </mat-error>
+            </ng-template>
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="Login" name="UserName" type="text" [(ngModel)]="model.UserName">
+            <input matInput placeholder="Login systemowy" name="UserName" type="text" formControlName="UserName">
             <mat-icon matSuffix class="mat-primary">verified_user</mat-icon>
-            <mat-error>Invalid email address.</mat-error>
+            <mat-error *ngIf="!myForm.controls.UserName.hasError('required')">
+                Login jest <strong>za krótki</strong>
+              </mat-error>
+              <mat-error *ngIf="!myForm.controls.UserName.hasError('minlength')">
+                Login jest <strong>wymagane</strong>
+              </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput placeholder="Password" name="Password" type="password" [(ngModel)]="model.UserPassword">
+            <input matInput placeholder="Hasło" name="Password" type="password" formControlName="UserPassword">
             <mat-icon matSuffix class="mat-primary">lock</mat-icon>
+            <mat-error *ngIf="!myForm.controls.UserPassword.hasError('required')">
+                Hasło musi być <strong>silne</strong>
+              </mat-error>
+              <mat-error *ngIf="!myForm.controls.UserPassword.hasError('pattern')">
+                Hasło jest <strong>wymagane</strong>
+              </mat-error>
           </mat-form-field>
 
+          <mat-form-field>
+              <input matInput placeholder="Stanowisko" name="Position" type="text" formControlName="Position">
+              <mat-icon matSuffix class="mat-primary">portrait</mat-icon>
+              <mat-error *ngIf="!myForm.controls.Position.hasError('required')">
+                  Stanowisko jest <strong>za krótkie</strong>
+                </mat-error>
+                <mat-error *ngIf="!myForm.controls.Position.hasError('minlength')">
+                  Stanowisko jest <strong>wymagane</strong>
+                </mat-error>
+            </mat-form-field>
+
 <mat-form-field color="text-primary">
-  <mat-label>Choose team</mat-label>
-  <mat-select name="team" [(ngModel)]="model.team">
+  <mat-label>Zespół</mat-label>
+  <mat-select name="team" formControlName="team">
     <mat-option *ngFor="let team of teams" [value] ="team">{{team}}</mat-option>
   </mat-select>
   <mat-icon matSuffix class="mat-primary">group</mat-icon>
+  <mat-error>
+      Zespół jest <strong>wymagany</strong>
+    </mat-error>
 </mat-form-field>
 
 <mat-form-field color="text-primary">
-    <mat-label>Choose role in system</mat-label>
-    <mat-select name="roles" [(ngModel)]="model.roles">
+    <mat-label>Rola</mat-label>
+    <mat-select name="roles" formControlName="roles">
       <mat-option *ngFor="let role of roles" [value] ="role">{{role}}</mat-option>
     </mat-select>
     <mat-icon matSuffix class="mat-primary">whatshot</mat-icon>
+    <mat-error>
+        Rola jest <strong>wymagana</strong>
+      </mat-error>
   </mat-form-field>
         </div>
           <div class="main-buttons">
-            <button mat-raised-button color="warn" (click)="registerForm.resetForm()"> <mat-icon class="mr-1">clear_all</mat-icon>Clear</button>
-            <button mat-raised-button class="bg-success text-white w-25" id="submitButton"  type="submit"><mat-icon class="mr-1">person_add</mat-icon>Submit</button>
+            <button mat-raised-button color="warn" (click)="myForm.reset()"> <mat-icon class="mr-1">clear_all</mat-icon>Clear</button>
+            <button mat-raised-button class="mat-primary text-white w-25" id="submitButton" [disabled]="!myForm.valid"  type="submit"><mat-icon class="mr-1">person_add</mat-icon>Submit</button>
           </div>
 
   </form>

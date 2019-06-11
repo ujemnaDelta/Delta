@@ -12,12 +12,13 @@
         </mdb-navbar-brand>
         <ul class="navbar-nav mr-auto">
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
-              <a class="nav-link waves-light text-primary" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
+
+              <a *appHasRole="['Member']" class="nav-link waves-light text-primary" style="color:black;" mdbWavesEffect [routerLink]="['/main']" ><mdb-icon fas icon="home"></mdb-icon>Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
-              <a class="nav-link waves-light text-primary" style="color:black" mdbWavesEffect [routerLink]="['/team']" ><mdb-icon fas icon="users"></mdb-icon>Team</a>
+              <a *appHasRole="['Member']" class="nav-link waves-light text-primary" style="color:black" mdbWavesEffect [routerLink]="['/team']" ><mdb-icon fas icon="users"></mdb-icon>Team</a>
             </li>
             <li *ngIf="loggedIn()" class="nav-item" routerLinkActive="active">
                 <a *appHasRole="['Admin']" class="nav-link waves-light text-success" mdbWavesEffect [routerLink]="['/adminPanel']" ><mdb-icon fas icon="toolbox"></mdb-icon>Admin Panel</a>
@@ -40,8 +41,8 @@
           <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light text-primary" mdbWavesEffect>
             <mdb-icon fas icon="user"></mdb-icon>Welcome {{authService.decodedToken?.unique_name | titlecase}}<span class="caret"></span></a>
           <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary mt-3" role="menu">
-            <a class="dropdown-item waves-light text-warning" mdbWavesEffect href="#">My account</a>
-            <a class="dropdown-item waves-light text-danger" mdbWavesEffect href="#" (click)="logout()">Log out</a>
+            <a class="dropdown-item waves-light text-warning " mdbWavesEffect href="#"><mdb-icon fas icon="user-circle"></mdb-icon> My account</a>
+            <a class="dropdown-item waves-light text-danger" mdbWavesEffect href="#" (click)="logout()"><mdb-icon fas icon="sign-out-alt"></mdb-icon>  Log out</a>
           </div>
         </li>
 
@@ -55,37 +56,35 @@
 <div class = "justify-content-center d-flex my-4 " *ngIf="!loggedIn()" >
 <form  [formGroup]="myForm" class="text-center border border-light p-5 w-25 cloudy-knoxville-gradient z-depth-3 mt-5" (submit)="login(myForm)">
 
-    <p class="h4 mb-4">Sign in</p>
+    <strong><p class="h2 mb-4 text-primary">Logowanie</p></strong>
 
     <div class="form-container"  >
         <mat-form-field appearance="outline">
             <mat-label>Użytkownik</mat-label>
             <input matInput placeholder="Podaj swój login" name="userName" type="text" formControlName="userName">
-            <mat-icon matSuffix>person</mat-icon>
+            <mat-icon matSuffix class="mat-primary">person</mat-icon>
             <mat-error>Login jest <strong>wymagany</strong></mat-error>
           </mat-form-field>
 
 
           <mat-form-field appearance="outline">
             <mat-label>Hasło</mat-label>
-            <input matInput placeholder="Enter your password" name="userPassword" type="password" formControlName="userPassword">
-            <mat-icon matSuffix>lock</mat-icon>
-            <mat-error *ngIf="!myForm.controls.userPassword.hasError('required') else minLength">
-              Hasło jest <strong>za krótkie</strong>
-            </mat-error>
-            <ng-template #minLength>
-            <mat-error *ngIf="!myForm.controls.userPassword.hasError('minLength')">
-             Hasło jest <strong>required</strong>
-            </mat-error>
-          </ng-template>
+            <input matInput placeholder="Podaj swoje hasło" name="userPassword" type="password" formControlName="userPassword">
+            <mat-icon matSuffix class="mat-primary">lock</mat-icon>
+            <mat-error *ngIf="!myForm.controls.userPassword.hasError('required')">
+                Hasło musi być <strong>silne</strong>
+              </mat-error>
+              <mat-error *ngIf="!myForm.controls.userPassword.hasError('pattern')">
+                Hasło jest <strong>wymagane</strong>
+              </mat-error>
           </mat-form-field>
 
 </div>
-<button mat-raised-button class="btn-login text-white w-50 my-sm-0 my-2 mat-primary" [disabled]="!myForm.valid"  id="submitButton" type="submit"><mat-icon class="mr-2">person_add</mat-icon>Submit</button>
+<button mat-raised-button class="btn-login text-white w-50 my-sm-0 my-2 mat-primary" [disabled]="!myForm.valid"  id="submitButton" type="submit"><mdb-icon fas icon="sign-in-alt" style="font-size:20px;"></mdb-icon>  Zaloguj</button>
     <!-- Register -->
     <div class = "my-4">
-    <p>Nie masz konta?
-        <a href="">Kontakt</a>
+    <p>Nie masz konta?<br>
+        <a class="text-danger" (click)="OpenContactDialog()">Kontakt</a>
     </p>
   </div>
 </form>

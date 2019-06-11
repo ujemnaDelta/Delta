@@ -25,7 +25,7 @@ constructor(private http: HttpClient) { }
       })
     );
 }
-register(user: User) {
+register(user: FormData) {
   return this.http.post(this.baseUrl + '/register', user);
 }
 

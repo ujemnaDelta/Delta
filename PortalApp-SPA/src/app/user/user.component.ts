@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { AlertifyService } from '../services/alertify.service';
 
 @Component({
   selector: 'app-user',
@@ -8,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UserComponent implements OnInit {
 values: any;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private alertify: AlertifyService) { }
 
   ngOnInit() {
     this.getValues();
@@ -17,7 +18,7 @@ values: any;
     this.http.get('http://localhost:5000/api/values').subscribe(response => {
       this.values = response;
     }, error => {
-      console.log(error);
+      this.alertify.error(error);
     });
   }
 }

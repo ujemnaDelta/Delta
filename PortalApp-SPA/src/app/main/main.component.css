@@ -1,0 +1,68 @@
+.example-ripple-container {
+  cursor: pointer;
+  width: 280px;
+  height: 250px;
+  align-items: center;
+  line-height: 1;
+  background-color: rgb(220, 238, 252);
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+}
+p.ex {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+}
+p.ex2 {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+}
+.example-tab-icon {
+  font-size: 85px;
+  margin-top: 25px;
+  margin-right: 65px;
+}
+ .cardList {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   height: 100vh;
+   align-items: center;
+ }
+ /* Column Gap */
+ /* Item sizing */
+ .cardListItem {
+   flex: 0 1 calc(33.3% - 32px);
+ }
+ body, html {
+  height: 100%;
+}
+.example-large-box  {
+  margin:45px;
+  box-sizing: border-box;
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+}
+.example-large-box > * {
+  margin: 20px;
+  align-items: center;
+}
+.main {
+  height: 100vh;
+}
+.mat-tab-group  {
+  align-items:center;
+  height: 100%;
+  width: 100%;
+}
+.mat-card {
+  width: 1320px;
+}

@@ -26,14 +26,14 @@ namespace PortalApp.API.Controllers
             _leaderRepo = leaderRepo;
         }
 
-        [Authorize(Policy = "RequireLeader")]
+        [Authorize(Policy = "RequireHrLeader")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLeaderName(int id)
         {
             if(id == 0) {
                 return BadRequest("Złe id");
             }
-            var leader= await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            var leader = await _leaderRepo.LeaderNameAsync(id);
 
             return Ok(leader);
         }
@@ -45,6 +45,7 @@ namespace PortalApp.API.Controllers
             if (id == 0)
             {
                 BadRequest("Błędne id");
+
             }
             var team2 = await _context.Team.FirstOrDefaultAsync(x => x.LeaderId == id);
 
@@ -69,33 +70,23 @@ namespace PortalApp.API.Controllers
             {
                 return BadRequest("Nie można dodać pustej opinii");
             }
-            Opinion opinion = new Opinion()
+
+             Opinion opinion = new Opinion()
             {
                 leaderText = opinionDto.leaderText,
                 mainText = opinionDto.mainText,
                 Created = opinionDto.created
             };
-            var opinionAdded = await _context.AddAsync(opinion);
-            await _context.SaveChangesAsync();
-
-            UserOpinion UserOpinion = new UserOpinion()
-            {
-                Leader = await _context.Users.SingleOrDefaultAsync(x => x.Id == opinionDto.LeaderId),
-                User = await _context.Users.SingleOrDefaultAsync(x => x.Id == opinionDto.evaluatedId),
-                Opinions = await _context.Opinion.SingleOrDefaultAsync(x => x.Id == opinion.Id)
-
-            };
-            await _context.UserOpinion.AddAsync(UserOpinion);
-            await _context.SaveChangesAsync();
+            var result = await _leaderRepo.AddOpinion(opinion, opinionDto);
 
             return Ok(201);
         }
-        [Authorize(Policy = "RequireLeader")]
+        [Authorize(Policy = "RequireHrLeader")]
         [HttpGet("useropinions/{id}")]
         public async Task<IActionResult> GetOpinions(int id)
         {
 
-            var result = await _context.UserOpinion.Include(x => x.Opinions).Where(x => x.User.Id == id).Select(x => x.Opinions).ToListAsync();
+            var result = await _leaderRepo.OpinionsAsync(id);
             return Ok(result);
         }
     }
