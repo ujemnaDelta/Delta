@@ -8,7 +8,6 @@ import {
 
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
 
-  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule
   MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatPaginatorModule,
   MatSortModule, MatCheckboxModule, MatDatepickerModule, MatGridListModule, MatRadioModule,
    MatNativeDateModule, MatOptionModule, MatSelectModule,
@@ -19,7 +18,6 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule, FormGroupDirective } from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import {AuthService} from 'src/app/services/auth.service';
@@ -67,26 +65,6 @@ export function tokenGetter() {
       MainComponent,
       TeamComponent,
       AdminPanelComponent,
-<<<<<<< HEAD
-=======
-      HrPanelComponent,
-      LeaderPanelComponent,
-      HasRoleDirective,
-      UserManagmentComponent,
-      TeamManagmentComponent,
-      AddPersonDialogComponent,
-      DeleteDialogComponent,
-      AddusertoteamDialogComponent,
-      AddteamDialogComponent,
-      DeleteteamDialogComponent,
-      LeaderTeamManagmentComponent,
-      AddOpinionDialogComponent,
-      ShowopinionsDialogComponent,
-      OpinionDialogComponent,
-      WorkersManagmentComponent,
-      ContactDialogComponent
-
->>>>>>> CodeGG
    ],
    imports: [
       BrowserModule,
