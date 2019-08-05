@@ -3,10 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PortalApp.API.Data;
 using PortalApp.API.DataTransferObjects;
 using PortalApp.API.Models;
+using PortalApp.API.Repositories.Interfaces;
 
-namespace PortalApp.API.Data
+namespace PortalApp.API.Repositories
 {
     public class AdminRepository : IAdminPanelRepository
     {
@@ -58,9 +60,9 @@ namespace PortalApp.API.Data
             }
         }
 
-        public async Task<IdentityResult> DeleteFromRoles(string UserName, RoleEditDto roleEditDto)
+        public async Task<IdentityResult> DeleteFromRoles(string userName, RoleEditDto roleEditDto)
         {
-            var user = await _userManager.FindByNameAsync(UserName);
+            var user = await _userManager.FindByNameAsync(userName);
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -78,15 +80,15 @@ namespace PortalApp.API.Data
             var roles = await _userManager.GetRolesAsync(user);
 
             var removeRole = await _userManager.RemoveFromRoleAsync(user,roles.First());
-           
+            
             var deleteUser = await _userManager.DeleteAsync(user);
 
             return deleteUser;
         }
 
-        public async Task<IdentityResult> EditRoles(string UserName, RoleEditDto roleEditDto)
+        public async Task<IdentityResult> EditRoles(string userName, RoleEditDto roleEditDto)
         {
-            var user = await _userManager.FindByNameAsync(UserName);
+            var user = await _userManager.FindByNameAsync(userName);
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -110,9 +112,9 @@ namespace PortalApp.API.Data
             return user;
         }
 
-        public async Task<IList<string>> GetUserRoles(string UserName)
+        public async Task<IList<string>> GetUserRoles(string userName)
         {
-            var user = await _userManager.FindByNameAsync(UserName);
+            var user = await _userManager.FindByNameAsync(userName);
             var result = await _userManager.GetRolesAsync(user);
        
             return result;

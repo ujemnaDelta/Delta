@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using PortalApp.API.DataTransferObjects;
 using PortalApp.API.Models;
 
-namespace PortalApp.API.Data
+namespace PortalApp.API.Repositories.Interfaces
 {
     public interface ILeaderRepository
     {

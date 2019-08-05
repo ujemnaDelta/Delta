@@ -27,6 +27,8 @@ using Microsoft.IdentityModel.Tokens;
 using PortalApp.API.Data;
 using PortalApp.API.Helpers;
 using PortalApp.API.Models;
+using PortalApp.API.Repositories;
+using PortalApp.API.Repositories.Interfaces;
 
 namespace PortalApp.API
 {

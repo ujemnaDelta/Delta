@@ -1,11 +1,12 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PortalApp.API.Data;
 using PortalApp.API.DataTransferObjects;
 using PortalApp.API.Models;
+using PortalApp.API.Repositories.Interfaces;
 
-namespace PortalApp.API.Data
+namespace PortalApp.API.Repositories
 {
     public class AuthorizationRepository : IAuthorizationRepository
     {
@@ -64,11 +65,11 @@ namespace PortalApp.API.Data
             return true;
         }
 
-        public async Task<IdentityResult> RegisterUser(UserForRegisterDTO userForRegister)
+        public async Task<IdentityResult> RegisterUser(UserForRegisterDTO userForRegisterDTO)
         {
-            if (userForRegister.roles == "Leader")
+            if (userForRegisterDTO.roles == "Leader")
             {
-                var TeamResult = await _context.Team.FirstOrDefaultAsync(x => x.NameOfTeam == userForRegister.team);
+                var TeamResult = await _context.Team.FirstOrDefaultAsync(x => x.NameOfTeam == userForRegisterDTO.team);
                 if (TeamResult.LeaderId != 0)
                 {
                     return null;
@@ -78,15 +79,15 @@ namespace PortalApp.API.Data
 
             UserModel newUser = new UserModel
             {
-                UserName = userForRegister.UserName,
-                FullUserName = userForRegister.FullUserName,
-                Position = userForRegister.Position
+                UserName = userForRegisterDTO.UserName,
+                FullUserName = userForRegisterDTO.FullUserName,
+                Position = userForRegisterDTO.Position
             };
 
-            IdentityResult result = (await _userManager.CreateAsync(newUser, userForRegister.UserPassword));
-            var createdUser = (await _userManager.FindByNameAsync(userForRegister.UserName));
+            IdentityResult result = (await _userManager.CreateAsync(newUser, userForRegisterDTO.UserPassword));
+            var createdUser = (await _userManager.FindByNameAsync(userForRegisterDTO.UserName));
 
-            var team = await _context.Team.FirstOrDefaultAsync(p => p.NameOfTeam == userForRegister.team);
+            var team = await _context.Team.FirstOrDefaultAsync(p => p.NameOfTeam == userForRegisterDTO.team);
 
 
 
@@ -99,11 +100,11 @@ namespace PortalApp.API.Data
             await _context.UserTeam.AddAsync(createdUserTeam);
             if (result.Succeeded)
             {
-                var user = _userManager.FindByNameAsync(userForRegister.UserName).Result;
-                await _userManager.AddToRolesAsync(user, new[] { userForRegister.roles });
-                if (userForRegister.roles == "Leader")
+                var user = _userManager.FindByNameAsync(userForRegisterDTO.UserName).Result;
+                await _userManager.AddToRolesAsync(user, new[] { userForRegisterDTO.roles });
+                if (userForRegisterDTO.roles == "Leader")
                 {
-                    var TeamResult = await _context.Team.FirstOrDefaultAsync(x => x.NameOfTeam == userForRegister.team);
+                    var TeamResult = await _context.Team.FirstOrDefaultAsync(x => x.NameOfTeam == userForRegisterDTO.team);
                     TeamResult.LeaderId = user.Id;
                     await _context.SaveChangesAsync();
                 }

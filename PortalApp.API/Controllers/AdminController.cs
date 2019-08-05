@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using PortalApp.API.DataTransferObjects;
 using Microsoft.AspNetCore.Identity;
 using PortalApp.API.Models;
+using PortalApp.API.Repositories.Interfaces;
 
 namespace PortalApp.API.Controllers
 {

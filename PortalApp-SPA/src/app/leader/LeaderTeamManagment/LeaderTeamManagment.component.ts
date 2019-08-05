@@ -22,23 +22,26 @@ export class LeaderTeamManagmentComponent implements OnInit {
   searchKey: string;
   LeaderId: number;
   constructor(private leaderService: LeaderService, private dialog: MatDialog, private authService: AuthService,
-    private alertify: AlertifyService) {}
+    private alertify: AlertifyService) {
+      this.LeaderId = this.authService.returnLeaderId();
+    }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
-    this.getAll();
+    this.LeaderId = this.authService.returnLeaderId();
+    if (this.LeaderId != null) {
+      this.getAll();
+    }
   }
 
   getAll() {
-    this.LeaderId = this.authService.returnLeaderId();
     this.leaderService.getUsersWithRoles(this.LeaderId).subscribe((team: TeamLeaderPanel[]) => {
       this.teamMates = new MatTableDataSource(team);
        this.teamMates.paginator = this.paginator;
      this.teamMates.sort = this.sort;
     }, error => {
-      this.alertify.error(error);
     });
   }
   applyFilter(filterValue: string) {

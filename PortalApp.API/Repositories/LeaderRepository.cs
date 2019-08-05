@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PortalApp.API.Data;
 using PortalApp.API.DataTransferObjects;
 using PortalApp.API.Models;
+using PortalApp.API.Repositories.Interfaces;
 
-namespace PortalApp.API.Data
+namespace PortalApp.API.Repositories
 {
     public class LeaderRepository : ILeaderRepository
     {
@@ -22,7 +23,7 @@ namespace PortalApp.API.Data
         public async Task<bool> AddOpinion(Opinion opinion, OpinionDto opinionDto)
         {
             
-            var opinionAdded = await _context.AddAsync(opinion);
+            await _context.AddAsync(opinion);
             await _context.SaveChangesAsync();
 
             UserOpinion UserOpinion = new UserOpinion()

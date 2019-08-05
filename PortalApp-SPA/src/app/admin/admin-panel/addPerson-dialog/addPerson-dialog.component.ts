@@ -38,7 +38,7 @@ export class AddPersonDialogComponent implements OnInit {
 
   register(form: FormControl) {
     this.authService.register(form.value).subscribe(() => {
-      this.alertify.success('registration successful');
+      this.alertify.success('Zarejestrowano pomyślnie');
       this.onClose();
     }, error => {
       this.alertify.error(error);
