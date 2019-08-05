@@ -35,3 +35,8 @@ tr.all-row:not(.header-row):hover {
 tr.all-row:not(.header-row):active {
   background: rgb(154, 186, 212);
 }
+.mat-spinner {
+  position: fixed;
+  margin-left: 50%;
+  margin-right: 50%;
+}

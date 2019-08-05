@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { User } from 'src/app/models/User';
 import { AdminService } from 'src/app/services/admin.service';
-import {MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig} from '@angular/material';
+import {MatPaginator, MatSort, MatTableDataSource, MatDialog, MatDialogConfig, MatProgressSpinnerModule} from '@angular/material';
 import { AddPersonDialogComponent } from '../admin-panel/addPerson-dialog/addPerson-dialog.component';
 import { DeleteDialogComponent } from '../admin-panel/delete-dialog/delete-dialog.component';
-import { equal } from 'assert';
 import { AlertifyService } from 'src/app/services/alertify.service';
 
 
@@ -14,11 +13,12 @@ import { AlertifyService } from 'src/app/services/alertify.service';
   styleUrls: ['./user-managment.component.css']
 })
 export class UserManagmentComponent implements OnInit {
-
-  displayedColumns: string[] = ['id', 'UserName', 'fullUserName', 'position', 'roles', 'team', 'Action'];
+  dataSource: any [];
   users: MatTableDataSource<User>;
+  displayedColumns: string[] = ['id', 'UserName', 'fullUserName', 'position', 'roles', 'team', 'Action'];
   searchKey: string;
   constructor(private adminService: AdminService, private dialog: MatDialog, private alertify: AlertifyService) {
+    this.users = new MatTableDataSource();
     dialog.afterAllClosed
     .subscribe(() => {
     // update a variable or call a function when the dialog closes
@@ -27,8 +27,8 @@ export class UserManagmentComponent implements OnInit {
   );
 }
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+   @ViewChild(MatPaginator) paginator: MatPaginator;
+   @ViewChild(MatSort) sort: MatSort;
 
   ngOnInit() {
    this.getAll();
@@ -36,8 +36,11 @@ export class UserManagmentComponent implements OnInit {
   getAll() {
     this.adminService.getUsersWithRoles().subscribe((user: User[]) => {
       this.users = new MatTableDataSource(user);
+      setTimeout(() => {
+        this.loading = false;
+       }, 2000);
       this.users.paginator = this.paginator;
-    this.users.sort = this.sort;
+     this.users.sort = this.sort;
     }, error => {
       this.alertify.error(error);
     });

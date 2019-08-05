@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -32,8 +33,8 @@ namespace PortalApp.API.Controllers
         {
             var userList = await (from user in _context.Users
                                   orderby user.Id
-                                  select new
-                                  {
+                                 select new
+                                 {
                                       Id = user.Id,
                                       UserName = user.UserName,
                                       FullUserName = user.FullUserName,
@@ -42,10 +43,10 @@ namespace PortalApp.API.Controllers
                                         .Where(p => p.UserId == user.Id).Select(p => p.Team.NameOfTeam),
                                     LeaderId = _context.UserTeam.Include(p => p.Team)
                                         .Where(p => p.UserId == user.Id).Select(p => p.Team.LeaderId).FirstOrDefault(),
-                                      Roles = (from userRole in user.UserRoles
-                                               join role in _context.Roles
-                                               on userRole.RoleId
-                                               equals role.Id
+                             Roles = (from userRole in user.UserRoles
+                                         join role in _context.Roles
+                                             on userRole.RoleId
+                                              equals role.Id
                                                select role.Name).ToList()
                                   }).ToListAsync();
             return Ok(userList);
@@ -111,18 +112,23 @@ namespace PortalApp.API.Controllers
         [HttpGet("teamsmanagment")]
         public async Task<IActionResult> GetTeamsWithLeaders() {
 
-            var TeamReturned = await (from team in _context.Team
-                                  select new
-                                  {
-                                      Id = team.Id,
-                                      Team = team.NameOfTeam,
-                                      LeaderId = team.LeaderId,
-                                      LeaderName = _context.UserTeam.Include(p => p.User)
-                                        .Where(p => p.UserId == team.LeaderId).Select(p => p.User.FullUserName).FirstOrDefault(),
-                                      TeamMates = _context.UserTeam.Include(p => p.User).Where( p => p.TeamId == team.Id).Select(p => p.User.FullUserName).ToList()
-                                  }).ToListAsync();
+            //var teamReturned = await _context.Team.Select(team => new
+            //{
+            //    team.Id,
+            //    Team = team.NameOfTeam,
+            //    team.LeaderId,
+            //    LeaderName =
+            //        _context.UserTeam.Include(p => p.User)
+            //            .Where(p => p.UserId == team.LeaderId)
+            //            .Select(p => p.User.FullUserName)
+            //            .FirstOrDefault(),
+            //    TeamMates = _context.UserTeam.Include(p => p.User)
+            //        .Where(p => p.TeamId == team.Id)
+            //        .Select(p => p.User.FullUserName)
+            //        .ToList()
+            //}).ToListAsync();
 
-            return Ok(TeamReturned);
+            return Ok();
         }
 
         [Authorize(Policy = "RequireAdmin")]
@@ -157,20 +163,20 @@ namespace PortalApp.API.Controllers
             {
                 return BadRequest("Złe id");
             }
-            int TeamId = int.Parse(id);
-            var team = await _context.Team.FirstOrDefaultAsync(x=> x.Id == TeamId);
-            var UserTeam = await _context.UserTeam.Where( x=> x.TeamId == team.Id).ToListAsync();
+            int teamId = int.Parse(id);
+            var team = await _context.Team.FirstOrDefaultAsync(x=> x.Id == teamId);
+            var userTeam = await _context.UserTeam.Where( x=> x.TeamId == team.Id).ToListAsync();
 
-            if(UserTeam == null || team == null) {
+            if(userTeam == null || team == null) {
                 return BadRequest("Nie znalazłem zespołu o takim id lub nie istnieje taka osoba");
             }
 
-            foreach (var user in UserTeam)
+            foreach (var user in userTeam)
             {
-                var removeRole = _context.UserTeam.Remove(user);
+               _context.UserTeam.Remove(user);
                 
             }
-            var result = _context.Remove(team);
+            _context.Remove(team);
             await _context.SaveChangesAsync();
             return Ok();
            

@@ -9,8 +9,13 @@ import { AlertifyService } from 'src/app/services/alertify.service';
 export class AdminPanelComponent implements OnInit {
 
   constructor(private alertify: AlertifyService) { }
-
+  color = 'primary';
+  value = 20;
+  loading = true;
   ngOnInit() {
+    setTimeout(() => {
+      this.loading = false;
+     }, 2000);
   }
 
 }

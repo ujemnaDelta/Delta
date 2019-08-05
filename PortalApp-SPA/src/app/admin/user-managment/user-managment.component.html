@@ -1,19 +1,27 @@
-<div class="search-div">
-    <button mat-raised-button (click)="onCreateDialog()" class="text-success mr-2 ">
-        <mat-icon>person_add</mat-icon>
-        Add person
-    </button>
 
-  <mat-form-field class="search-form-field" floatLabel="never">
-    <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter($event.target.value)">
-    <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-form-field>
+
+<div class="search-div">
+  <button mat-raised-button (click)="onCreateDialog()" class="text-success mr-2 ">
+      <mat-icon>person_add</mat-icon>
+      Add person
+  </button>
+
+<mat-form-field class="search-form-field" floatLabel="never">
+  <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter($event.target.value)">
+  <button mat-button matSuffix mat-icon-button aria-label="Clear"*ngIf="searchKey"  (click)="onSearchClear()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-form-field>
 </div>
 
+<mat-progress-spinner *ngIf='loading'
+style="margin:0 auto;"
+        [color]="'color'"
+        [mode]="'indeterminate'"
+        [value]="'value'">
+    </mat-progress-spinner>
 
-<div class="example-container mat-elevation-z8">
+<div class="example-container mat-elevation-z8" *ngIf='!loading'>
   <table mat-table [dataSource]="users" matSort>
 
     <!-- ID Column -->
@@ -63,4 +71,3 @@
 
   <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>
-

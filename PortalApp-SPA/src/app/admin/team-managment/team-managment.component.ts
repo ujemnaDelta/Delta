@@ -17,6 +17,9 @@ import { AlertifyService } from 'src/app/services/alertify.service';
   styleUrls: ['./team-managment.component.css'],
 })
 export class TeamManagmentComponent implements OnInit {
+  color = 'primary';
+  value = 20;
+  loadingB = true;
   displayedColumns: string[] = ['id', 'team', 'leaderName', 'teamMates', 'Action'];
   teams: MatTableDataSource<TeamManagment>;
   searchKey: string;

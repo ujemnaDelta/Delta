@@ -44,11 +44,6 @@ namespace PortalApp.API.Repositories
             return team;
         }
 
-        public Task<object> AllUsersWithRoles()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public async Task<bool> CheckTeamUser(UserModel user)
         {
             var result = await _context.UserTeam.AnyAsync(x=> x.UserId == user.Id);
